@@ -303,8 +303,11 @@
         inset: 0;
         background:
           linear-gradient(120deg, rgba(9, 22, 35, 0.92) 0%, rgba(0, 109, 114, 0.72) 48%, rgba(232, 93, 63, 0.55) 100%),
-          var(--hero-image, url("https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2200&q=85")) center/cover;
-        transform: scale(1.02);
+          var(--hero-image, url("https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2200&q=85"));
+        background-color: #102331;
+        background-position: center, var(--hero-position, center center);
+        background-repeat: no-repeat, no-repeat;
+        background-size: cover, var(--hero-size, cover);
       }
 
       .hero::after {
@@ -1090,6 +1093,25 @@
         background: rgba(255, 255, 255, 0.72);
       }
 
+      .hero-display-controls {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid rgba(16, 35, 49, 0.1);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .range-row {
+        display: grid;
+        gap: 10px;
+      }
+
+      input[type="range"] {
+        padding: 0;
+      }
+
       .slides-toolbar {
         display: grid;
         grid-template-columns: 1fr auto auto;
@@ -1320,6 +1342,7 @@
         .upload-control,
         .slides-toolbar,
         .slide-list,
+        .hero-display-controls,
         .dashboard-stats,
         .footer-grid {
           grid-template-columns: 1fr;
@@ -1408,6 +1431,9 @@
             "https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=2200&q=85",
             "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=2200&q=85",
           ],
+          hero_fit: "contain",
+          hero_zoom: 100,
+          hero_position: "center center",
           address: "123 Grace Avenue, Community Center",
           phone: "+1 (555) 013-4477",
           email: "hello@landofdunamise.org",
@@ -1896,6 +1922,24 @@
         return [primary, ...slides.filter((slide) => slide !== primary)].filter(Boolean);
       }
 
+      function clampNumber(value, min, max, fallback) {
+        const number = Number(value);
+        if (!Number.isFinite(number)) return fallback;
+        return Math.min(max, Math.max(min, number));
+      }
+
+      function getHeroBackgroundSize(settings) {
+        const fit = settings.hero_fit || fallbackData.site_settings.hero_fit || "contain";
+        const zoom = clampNumber(settings.hero_zoom, 50, 160, fallbackData.site_settings.hero_zoom || 100);
+        if (fit === "cover") return "cover";
+        if (fit === "custom") return `${zoom}% auto`;
+        return "contain";
+      }
+
+      function getHeroPosition(settings) {
+        return settings.hero_position || fallbackData.site_settings.hero_position || "center center";
+      }
+
       function isDataUrl(value) {
         return typeof value === "string" && value.startsWith("data:");
       }
@@ -2332,6 +2376,8 @@
         const heroSlides = getHeroSlides(settings);
         const [activeSlide, setActiveSlide] = useState(0);
         const activeHeroImage = heroSlides[activeSlide % heroSlides.length] || fallbackData.site_settings.hero_image_url;
+        const heroBackgroundSize = getHeroBackgroundSize(settings);
+        const heroPosition = getHeroPosition(settings);
 
         useEffect(() => {
           setActiveSlide(0);
@@ -2349,7 +2395,11 @@
           <section
             id="home"
             className="hero"
-            style={{ "--hero-image": `url("${activeHeroImage}")` }}
+            style={{
+              "--hero-image": `url("${activeHeroImage}")`,
+              "--hero-size": heroBackgroundSize,
+              "--hero-position": heroPosition,
+            }}
           >
             <div className="hero-inner">
               <div className="hero-copy">
@@ -3051,8 +3101,15 @@
       }
 
       function SiteSettingsForm({ settings, onSave }) {
-        const [draft, setDraft] = useState({ ...settings, hero_slides: normalizeMediaArray(settings.hero_slides) });
-        useEffect(() => setDraft({ ...settings, hero_slides: normalizeMediaArray(settings.hero_slides) }), [settings]);
+        const normalizedSettings = {
+          ...settings,
+          hero_slides: normalizeMediaArray(settings.hero_slides),
+          hero_fit: settings.hero_fit || "contain",
+          hero_zoom: clampNumber(settings.hero_zoom, 50, 160, 100),
+          hero_position: settings.hero_position || "center center",
+        };
+        const [draft, setDraft] = useState(normalizedSettings);
+        useEffect(() => setDraft(normalizedSettings), [settings]);
         const fields = [
           ["logo_url", "Church Logo / Favicon", "upload-image", "full"],
           ["church_name", "Church Name", "text"],
@@ -3088,6 +3145,9 @@
                 onChange={(value) => setDraft({ ...draft, [name]: value })}
               />
             ))}
+            <div className="field full">
+              <HeroDisplayControls draft={draft} setDraft={setDraft} />
+            </div>
             <div className="field full">
               <HeroSlidesEditor
                 slides={normalizeMediaArray(draft.hero_slides)}
@@ -3173,6 +3233,56 @@
                   </div>
                 </div>
               </form>
+            </div>
+          </div>
+        );
+      }
+
+      function HeroDisplayControls({ draft, setDraft }) {
+        const zoom = clampNumber(draft.hero_zoom, 50, 160, 100);
+        return (
+          <div className="hero-display-controls">
+            <div className="field">
+              <label htmlFor="hero-fit">Hero Image Fit</label>
+              <select
+                id="hero-fit"
+                value={draft.hero_fit || "contain"}
+                onChange={(event) => setDraft({ ...draft, hero_fit: event.target.value })}
+              >
+                <option value="contain">Full image</option>
+                <option value="custom">Manual zoom</option>
+                <option value="cover">Fill hero</option>
+              </select>
+            </div>
+            <div className="field range-row">
+              <label htmlFor="hero-zoom">Hero Zoom: {zoom}%</label>
+              <input
+                id="hero-zoom"
+                type="range"
+                min="50"
+                max="160"
+                step="5"
+                value={zoom}
+                onChange={(event) => setDraft({ ...draft, hero_zoom: Number(event.target.value), hero_fit: "custom" })}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="hero-position">Hero Position</label>
+              <select
+                id="hero-position"
+                value={draft.hero_position || "center center"}
+                onChange={(event) => setDraft({ ...draft, hero_position: event.target.value })}
+              >
+                <option value="center center">Center</option>
+                <option value="center top">Top</option>
+                <option value="center bottom">Bottom</option>
+                <option value="left center">Left</option>
+                <option value="right center">Right</option>
+                <option value="left top">Top Left</option>
+                <option value="right top">Top Right</option>
+                <option value="left bottom">Bottom Left</option>
+                <option value="right bottom">Bottom Right</option>
+              </select>
             </div>
           </div>
         );
