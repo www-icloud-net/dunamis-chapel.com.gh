@@ -1,0 +1,3457 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Land of Dunamise Chapel church website with sermons, events, ministries, prayer requests, giving, contact, and administration."
+    />
+    <title>Land of Dunamise Chapel</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #102331;
+        --ink-2: #294352;
+        --muted: #6b7b86;
+        --paper: #fbfaf7;
+        --surface: #ffffff;
+        --line: rgba(16, 35, 49, 0.12);
+        --teal: #008c8c;
+        --teal-dark: #006d72;
+        --coral: #e85d3f;
+        --gold: #f5b642;
+        --leaf: #63a46c;
+        --plum: #7d4f82;
+        --sky: #4aa3df;
+        --shadow: 0 20px 60px rgba(16, 35, 49, 0.12);
+        --radius: 8px;
+        --header-height: 78px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          radial-gradient(circle at top left, rgba(245, 182, 66, 0.16), transparent 34rem),
+          linear-gradient(180deg, #fffdf8 0%, #f5fbfb 42%, #fffaf6 100%);
+        color: var(--ink);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.55;
+        letter-spacing: 0;
+      }
+
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        min-height: var(--header-height);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 12px 40px rgba(16, 35, 49, 0.08);
+      }
+
+      .header-inner {
+        width: min(1180px, calc(100% - 32px));
+        min-height: var(--header-height);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 220px;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        font-weight: 900;
+        background: conic-gradient(from 180deg, var(--gold), var(--coral), var(--teal), var(--leaf), var(--gold));
+        box-shadow: 0 12px 28px rgba(232, 93, 63, 0.28);
+      }
+
+      .brand-mark img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fff;
+      }
+
+      .brand-text {
+        display: grid;
+        gap: 0;
+      }
+
+      .brand-title {
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 1.05;
+      }
+
+      .brand-subtitle {
+        color: var(--muted);
+        font-size: 0.77rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+      }
+
+      .nav-links a {
+        padding: 10px 12px;
+        border-radius: 999px;
+        color: var(--ink-2);
+        font-size: 0.91rem;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: var(--teal-dark);
+        background: rgba(0, 140, 140, 0.1);
+        transform: translateY(-1px);
+      }
+
+      .header-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .icon-button {
+        width: 42px;
+        height: 42px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 24px rgba(16, 35, 49, 0.08);
+        cursor: pointer;
+      }
+
+      .icon-button svg,
+      .btn svg,
+      .mini-action svg {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2.35;
+      }
+
+      .menu-button {
+        display: none;
+      }
+
+      .btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--ink);
+        font-weight: 900;
+        line-height: 1;
+        cursor: pointer;
+        box-shadow: 0 16px 34px rgba(16, 35, 49, 0.18);
+        transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 38px rgba(16, 35, 49, 0.22);
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, var(--coral), #f59f32);
+      }
+
+      .btn.secondary {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid rgba(16, 35, 49, 0.12);
+      }
+
+      .btn.ghost {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      .section {
+        padding: 94px 0;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--teal-dark);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .section-kicker::before {
+        content: "";
+        width: 32px;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--coral), var(--gold), var(--teal));
+      }
+
+      .section-heading {
+        width: min(780px, 100%);
+        margin: 12px 0 18px;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(2rem, 5vw, 4.2rem);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .section-lede {
+        width: min(760px, 100%);
+        margin: 0;
+        color: var(--ink-2);
+        font-size: clamp(1rem, 2vw, 1.18rem);
+      }
+
+      .hero {
+        position: relative;
+        min-height: calc(100vh - var(--header-height));
+        display: grid;
+        align-items: stretch;
+        color: #fff;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(120deg, rgba(9, 22, 35, 0.92) 0%, rgba(0, 109, 114, 0.72) 48%, rgba(232, 93, 63, 0.55) 100%),
+          var(--hero-image, url("https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2200&q=85")) center/cover;
+        transform: scale(1.02);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 120px;
+        background: linear-gradient(180deg, transparent, rgba(251, 250, 247, 0.96));
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: clamp(72px, 9vw, 116px) 0 72px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.55fr);
+        align-items: end;
+        gap: 38px;
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: 24px;
+      }
+
+      .hero-eyebrow {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 13px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10px);
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 0.88rem;
+        font-weight: 900;
+      }
+
+      .hero-title {
+        width: min(840px, 100%);
+        margin: 0;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(3rem, 9vw, 7.8rem);
+        line-height: 0.88;
+        letter-spacing: 0;
+      }
+
+      .hero-text {
+        width: min(690px, 100%);
+        margin: 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: clamp(1.05rem, 2vw, 1.35rem);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .hero-dots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .hero-dots button {
+        width: 34px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.38);
+        cursor: pointer;
+      }
+
+      .hero-dots button.active {
+        background: #fff;
+      }
+
+      .hero-panel {
+        align-self: end;
+        display: grid;
+        gap: 12px;
+      }
+
+      .next-service {
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+      }
+
+      .next-service strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.08rem;
+      }
+
+      .next-service span {
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .metric-chip {
+        min-height: 88px;
+        padding: 12px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--ink);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+      }
+
+      .metric-chip b {
+        display: block;
+        font-size: clamp(1.25rem, 3vw, 1.8rem);
+        line-height: 1;
+      }
+
+      .metric-chip span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .announcement-strip {
+        position: relative;
+        z-index: 2;
+        margin-top: -34px;
+      }
+
+      .announcement-track {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .announcement-card {
+        min-height: 148px;
+        padding: 20px;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid rgba(16, 35, 49, 0.08);
+        box-shadow: var(--shadow);
+        border-top: 5px solid var(--accent, var(--teal));
+      }
+
+      .announcement-card small {
+        color: var(--muted);
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .announcement-card h3 {
+        margin: 8px 0 8px;
+        font-size: 1.06rem;
+      }
+
+      .announcement-card p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.94rem;
+      }
+
+      .split-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1.08fr);
+        gap: clamp(28px, 5vw, 70px);
+        align-items: center;
+      }
+
+      .image-stack {
+        position: relative;
+        min-height: 540px;
+      }
+
+      .image-stack img {
+        width: 76%;
+        height: 460px;
+        object-fit: cover;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .image-stack img:nth-child(2) {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 48%;
+        height: 280px;
+        border: 8px solid var(--paper);
+      }
+
+      .value-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .value-item {
+        min-height: 150px;
+        padding: 20px;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid var(--line);
+        box-shadow: 0 14px 36px rgba(16, 35, 49, 0.08);
+      }
+
+      .value-item i,
+      .service-time i,
+      .ministry-card i,
+      .sermon-card i,
+      .event-date i,
+      .giving-card i {
+        width: 38px;
+        height: 38px;
+        display: inline-grid;
+        place-items: center;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--accent, var(--teal));
+      }
+
+      .value-item h3,
+      .service-time h3,
+      .ministry-card h3,
+      .sermon-card h3,
+      .event-card h3,
+      .giving-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.12rem;
+      }
+
+      .value-item p,
+      .service-time p,
+      .ministry-card p,
+      .sermon-card p,
+      .event-card p,
+      .giving-card p {
+        margin: 0;
+        color: var(--ink-2);
+      }
+
+      .band {
+        background:
+          linear-gradient(180deg, rgba(0, 140, 140, 0.07), rgba(245, 182, 66, 0.08)),
+          #f8fbf7;
+      }
+
+      .service-grid,
+      .ministry-grid,
+      .sermon-grid,
+      .event-grid,
+      .giving-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 34px;
+      }
+
+      .service-time,
+      .ministry-card,
+      .sermon-card,
+      .event-card,
+      .giving-card {
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 22px;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid rgba(16, 35, 49, 0.09);
+        box-shadow: 0 16px 42px rgba(16, 35, 49, 0.08);
+      }
+
+      .service-time:nth-child(3n + 1),
+      .ministry-card:nth-child(3n + 1),
+      .sermon-card:nth-child(3n + 1),
+      .giving-card:nth-child(3n + 1) {
+        --accent: var(--teal);
+      }
+
+      .service-time:nth-child(3n + 2),
+      .ministry-card:nth-child(3n + 2),
+      .sermon-card:nth-child(3n + 2),
+      .giving-card:nth-child(3n + 2) {
+        --accent: var(--coral);
+      }
+
+      .service-time:nth-child(3n),
+      .ministry-card:nth-child(3n),
+      .sermon-card:nth-child(3n),
+      .giving-card:nth-child(3n) {
+        --accent: var(--leaf);
+      }
+
+      .time-label,
+      .date-label,
+      .status-pill {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(16, 35, 49, 0.07);
+        color: var(--ink);
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      .card-media {
+        height: 190px;
+        margin: -22px -22px 18px;
+        border-radius: var(--radius) var(--radius) 0 0;
+        object-fit: cover;
+      }
+
+      .sermon-card {
+        min-height: 300px;
+      }
+
+      .sermon-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 800;
+      }
+
+      .sermon-media {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .sermon-media video,
+      .sermon-media audio {
+        width: 100%;
+        border-radius: var(--radius);
+      }
+
+      .sermon-media video {
+        min-height: 180px;
+        background: #071822;
+      }
+
+      .event-card {
+        min-height: 230px;
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        gap: 18px;
+      }
+
+      .event-date {
+        align-self: start;
+        display: grid;
+        place-items: center;
+        min-height: 94px;
+        border-radius: var(--radius);
+        color: #fff;
+        background: linear-gradient(135deg, var(--teal), var(--coral));
+      }
+
+      .event-date strong {
+        display: block;
+        font-size: 1.8rem;
+        line-height: 1;
+      }
+
+      .event-date span {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr 0.8fr;
+        grid-auto-rows: 240px;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .gallery-showcase {
+        position: relative;
+        min-height: 460px;
+        margin-top: 34px;
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #102331;
+        box-shadow: var(--shadow);
+      }
+
+      .gallery-showcase img {
+        width: 100%;
+        height: 460px;
+        object-fit: cover;
+      }
+
+      .gallery-showcase-caption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 28px;
+        color: #fff;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.76));
+        font-weight: 900;
+      }
+
+      .gallery-controls {
+        display: flex;
+        gap: 8px;
+      }
+
+      .gallery-controls button {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--ink);
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #dfe8e6;
+      }
+
+      .gallery-item:first-child {
+        grid-row: span 2;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 400ms ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.04);
+      }
+
+      .gallery-caption {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 22px;
+        color: #fff;
+        background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.74));
+        font-weight: 900;
+      }
+
+      .prayer-contact {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: 24px;
+        align-items: start;
+        margin-top: 34px;
+      }
+
+      .contact-panel,
+      .form-panel {
+        padding: 26px;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid rgba(16, 35, 49, 0.09);
+        box-shadow: var(--shadow);
+      }
+
+      .contact-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .contact-row {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .contact-row i {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--teal);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        color: var(--ink);
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        min-height: 46px;
+        padding: 11px 12px;
+        border: 1px solid rgba(16, 35, 49, 0.16);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        outline: none;
+        transition: border 160ms ease, box-shadow 160ms ease;
+      }
+
+      textarea {
+        min-height: 124px;
+        resize: vertical;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 4px rgba(0, 140, 140, 0.12);
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .form-status {
+        min-height: 22px;
+        color: var(--teal-dark);
+        font-size: 0.92rem;
+        font-weight: 800;
+      }
+
+      .admin-section {
+        color: #eef7f7;
+        background:
+          linear-gradient(135deg, rgba(16, 35, 49, 0.97), rgba(0, 109, 114, 0.94)),
+          url("https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=1800&q=80") center/cover;
+      }
+
+      .admin-section .section-lede,
+      .admin-section .section-kicker {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .admin-shell {
+        margin-top: 34px;
+        padding: 20px;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(18px);
+      }
+
+      .admin-login {
+        width: min(520px, 100%);
+        display: grid;
+        gap: 12px;
+      }
+
+      .admin-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .admin-tabs button {
+        padding: 10px 13px;
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        cursor: pointer;
+        font-size: 0.86rem;
+        font-weight: 900;
+      }
+
+      .admin-tabs button.active {
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .admin-grid {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .admin-panel {
+        padding: 18px;
+        border-radius: var(--radius);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .admin-panel h3 {
+        margin: 0 0 12px;
+      }
+
+      .admin-list {
+        display: grid;
+        gap: 10px;
+        max-height: 620px;
+        overflow: auto;
+      }
+
+      .admin-row {
+        padding: 12px;
+        border: 1px solid rgba(16, 35, 49, 0.1);
+        border-radius: var(--radius);
+        background: #fff;
+      }
+
+      .admin-row strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .admin-row small {
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .row-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .mini-action {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        color: var(--ink);
+        background: rgba(16, 35, 49, 0.07);
+        font-size: 0.8rem;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .mini-action.danger {
+        color: #9f2e1c;
+        background: rgba(232, 93, 63, 0.12);
+      }
+
+      .admin-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .admin-form .checkbox-row {
+        min-height: 46px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid rgba(16, 35, 49, 0.12);
+        border-radius: var(--radius);
+      }
+
+      .admin-form input[type="checkbox"] {
+        width: 18px;
+        min-height: 18px;
+      }
+
+      .upload-field {
+        display: grid;
+        gap: 10px;
+      }
+
+      .upload-control {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .upload-button {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--teal);
+        font-size: 0.84rem;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .upload-button input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .media-preview {
+        overflow: hidden;
+        border: 1px solid rgba(16, 35, 49, 0.12);
+        border-radius: var(--radius);
+        background: rgba(16, 35, 49, 0.04);
+      }
+
+      .media-preview img,
+      .media-preview video,
+      .media-preview audio {
+        width: 100%;
+      }
+
+      .media-preview img {
+        height: 190px;
+        object-fit: cover;
+      }
+
+      .slides-editor {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid rgba(16, 35, 49, 0.1);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .slides-toolbar {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .slide-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .slide-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #102331;
+      }
+
+      .slide-item img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+      }
+
+      .slide-item button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
+
+      .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .dashboard-stat {
+        padding: 18px;
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .dashboard-stat b {
+        display: block;
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .dashboard-stat span {
+        color: var(--muted);
+        font-weight: 900;
+      }
+
+      .message-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .message-card {
+        padding: 16px;
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid rgba(16, 35, 49, 0.1);
+      }
+
+      .message-card p {
+        margin: 8px 0;
+      }
+
+      .site-footer {
+        color: rgba(255, 255, 255, 0.86);
+        background: #102331;
+        padding: 54px 0 28px;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.1fr repeat(3, minmax(0, 0.55fr));
+        gap: 28px;
+      }
+
+      .site-footer h3,
+      .site-footer h4 {
+        margin: 0 0 12px;
+        color: #fff;
+      }
+
+      .site-footer p,
+      .site-footer a {
+        color: rgba(255, 255, 255, 0.76);
+      }
+
+      .footer-links {
+        display: grid;
+        gap: 8px;
+      }
+
+      .footer-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 0.88rem;
+      }
+
+      .empty-state {
+        padding: 20px;
+        border: 1px dashed rgba(16, 35, 49, 0.24);
+        border-radius: var(--radius);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .map-frame {
+        width: 100%;
+        min-height: 310px;
+        margin-top: 22px;
+        border: 0;
+        border-radius: var(--radius);
+      }
+
+      @media (max-width: 1040px) {
+        .nav-links {
+          position: fixed;
+          left: 16px;
+          right: 16px;
+          top: calc(var(--header-height) + 10px);
+          display: none;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          padding: 14px;
+          border-radius: var(--radius);
+          background: rgba(255, 255, 255, 0.96);
+          border: 1px solid var(--line);
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.open {
+          display: grid;
+        }
+
+        .nav-links a {
+          border-radius: var(--radius);
+        }
+
+        .menu-button {
+          display: inline-grid;
+        }
+
+        .header-actions .btn {
+          display: none;
+        }
+
+        .hero-inner,
+        .split-grid,
+        .prayer-contact,
+        .admin-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-panel {
+          align-self: start;
+        }
+
+        .service-grid,
+        .ministry-grid,
+        .sermon-grid,
+        .event-grid,
+        .giving-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .announcement-track,
+        .dashboard-stats,
+        .footer-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        :root {
+          --header-height: 70px;
+        }
+
+        .brand {
+          min-width: 0;
+        }
+
+        .brand-title {
+          max-width: 150px;
+          font-size: 0.92rem;
+        }
+
+        .brand-subtitle {
+          display: none;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+
+        .hero-inner {
+          padding: 58px 0 64px;
+        }
+
+        .hero-title {
+          font-size: clamp(3rem, 16vw, 4.9rem);
+        }
+
+        .hero-metrics,
+        .announcement-track,
+        .value-list,
+        .service-grid,
+        .ministry-grid,
+        .sermon-grid,
+        .event-grid,
+        .giving-grid,
+        .gallery-grid,
+        .form-grid,
+        .admin-form,
+        .upload-control,
+        .slides-toolbar,
+        .slide-list,
+        .dashboard-stats,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-grid {
+          grid-auto-rows: 240px;
+        }
+
+        .gallery-item:first-child {
+          grid-row: span 1;
+        }
+
+        .image-stack {
+          min-height: 360px;
+        }
+
+        .image-stack img {
+          width: 86%;
+          height: 300px;
+        }
+
+        .image-stack img:nth-child(2) {
+          width: 58%;
+          height: 180px;
+          border-width: 6px;
+        }
+
+        .event-card {
+          grid-template-columns: 1fr;
+        }
+
+        .event-date {
+          width: 92px;
+        }
+
+        .section {
+          padding: 70px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script type="text/babel">
+      const SUPABASE_URL = "https://oqtywdcctnbfmjeczhdn.supabase.co";
+      const SUPABASE_ANON_KEY = "sb_publishable_CfHBbjLFrX4UMQvEZK1-Mg_MKjf8ZO1";
+
+      const { useCallback, useEffect, useMemo, useState } = React;
+
+      const hasSupabaseConfig =
+        SUPABASE_URL.startsWith("https://") &&
+        !SUPABASE_URL.includes("YOUR-SUPABASE") &&
+        SUPABASE_ANON_KEY &&
+        !SUPABASE_ANON_KEY.includes("YOUR-SUPABASE");
+
+      const supabaseClient = hasSupabaseConfig
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: { persistSession: false },
+            realtime: { params: { eventsPerSecond: 6 } },
+          })
+        : null;
+
+      const fallbackData = {
+        site_settings: {
+          id: 1,
+          church_name: "Land of Dunamise Chapel",
+          tagline: "Raising devoted people, strengthening families, serving the city.",
+          welcome_title: "A vibrant church family where worship, word, and service meet.",
+          welcome_body:
+            "Land of Dunamise Chapel is a Christ-centered community shaped by prayer, discipleship, compassion, and excellence. Everyone has a place to grow, belong, and serve.",
+          logo_url: "",
+          hero_image_url:
+            "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2200&q=85",
+          hero_slides: [
+            "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=2200&q=85",
+            "https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=2200&q=85",
+            "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&w=2200&q=85",
+          ],
+          address: "123 Grace Avenue, Community Center",
+          phone: "+1 (555) 013-4477",
+          email: "hello@landofdunamise.org",
+          facebook_url: "https://facebook.com",
+          youtube_url: "https://youtube.com",
+          instagram_url: "https://instagram.com",
+          live_stream_url: "https://youtube.com",
+          map_embed_url: "",
+        },
+        announcements: [
+          {
+            id: "a1",
+            title: "Night of Dominion",
+            summary: "An evening of worship, prayer, and prophetic ministry for the whole family.",
+            starts_on: "2026-06-05",
+            accent: "#e85d3f",
+          },
+          {
+            id: "a2",
+            title: "Community Care Weekend",
+            summary: "Food pantry outreach, family support, and neighborhood prayer visits.",
+            starts_on: "2026-06-13",
+            accent: "#008c8c",
+          },
+          {
+            id: "a3",
+            title: "New Members Reception",
+            summary: "A warm gathering for new members and anyone ready to take the next step.",
+            starts_on: "2026-06-21",
+            accent: "#63a46c",
+          },
+        ],
+        service_times: [
+          {
+            id: "s1",
+            label: "Sunday Celebration",
+            day_label: "Sunday",
+            time_label: "9:00 AM",
+            location: "Main Sanctuary",
+            description: "A joyful service of worship, teaching, prayer, and ministry.",
+            sort_order: 1,
+          },
+          {
+            id: "s2",
+            label: "Midweek Word & Prayer",
+            day_label: "Wednesday",
+            time_label: "6:30 PM",
+            location: "Chapel Hall",
+            description: "Focused teaching and corporate prayer for spiritual growth.",
+            sort_order: 2,
+          },
+          {
+            id: "s3",
+            label: "Youth & Young Adults",
+            day_label: "Friday",
+            time_label: "7:00 PM",
+            location: "Upper Room",
+            description: "Faith, friendship, worship, and leadership formation.",
+            sort_order: 3,
+          },
+        ],
+        ministries: [
+          {
+            id: "m1",
+            title: "Worship & Creative Arts",
+            description: "Singers, musicians, media, and creatives serving with excellence.",
+            leader: "Ministerial Team",
+            meeting_time: "Thursdays, 6:30 PM",
+            image_url:
+              "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80",
+            sort_order: 1,
+          },
+          {
+            id: "m2",
+            title: "Children of Promise",
+            description: "Safe, joyful, Scripture-rich care and discipleship for children.",
+            leader: "Children's Ministry",
+            meeting_time: "Sundays, 9:00 AM",
+            image_url:
+              "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1200&q=80",
+            sort_order: 2,
+          },
+          {
+            id: "m3",
+            title: "Care & Outreach",
+            description: "Practical service, hospital visits, community care, and benevolence.",
+            leader: "Care Team",
+            meeting_time: "Monthly",
+            image_url:
+              "https://images.unsplash.com/photo-1469571486292-b53601012a24?auto=format&fit=crop&w=1200&q=80",
+            sort_order: 3,
+          },
+        ],
+        sermons: [
+          {
+            id: "r1",
+            title: "Established in Grace",
+            speaker: "Lead Pastor",
+            scripture: "Ephesians 2:8-10",
+            sermon_date: "2026-05-10",
+            media_url: "https://youtube.com",
+            notes: "Living from the finished work of Christ with confidence and humility.",
+            sort_order: 1,
+          },
+          {
+            id: "r2",
+            title: "The Power of a Praying Church",
+            speaker: "Prayer Team",
+            scripture: "Acts 4:23-31",
+            sermon_date: "2026-05-03",
+            media_url: "https://youtube.com",
+            notes: "How united prayer shapes courage, compassion, and mission.",
+            sort_order: 2,
+          },
+          {
+            id: "r3",
+            title: "Built to Serve",
+            speaker: "Leadership Team",
+            scripture: "1 Peter 4:10-11",
+            sermon_date: "2026-04-26",
+            media_url: "https://youtube.com",
+            notes: "Discovering gifts and using them faithfully in the house of God.",
+            sort_order: 3,
+          },
+        ],
+        events: [
+          {
+            id: "e1",
+            title: "Dominion Worship Night",
+            event_date: "2026-06-05",
+            event_time: "7:00 PM",
+            location: "Main Sanctuary",
+            description: "A citywide gathering of worship, prayer, and ministry.",
+            registration_url: "",
+            sort_order: 1,
+          },
+          {
+            id: "e2",
+            title: "Family Sunday",
+            event_date: "2026-06-21",
+            event_time: "9:00 AM",
+            location: "Main Sanctuary",
+            description: "Baby dedications, family prayer, fellowship, and shared meals.",
+            registration_url: "",
+            sort_order: 2,
+          },
+          {
+            id: "e3",
+            title: "Leadership Advance",
+            event_date: "2026-07-11",
+            event_time: "10:00 AM",
+            location: "Chapel Hall",
+            description: "Training and alignment for ministry leaders and volunteers.",
+            registration_url: "",
+            sort_order: 3,
+          },
+        ],
+        giving_methods: [
+          {
+            id: "g1",
+            method_name: "Tithes & Offerings",
+            details: "Give securely to support worship, discipleship, care, and outreach.",
+            button_label: "Give Online",
+            button_url: "#giving",
+            sort_order: 1,
+          },
+          {
+            id: "g2",
+            method_name: "Missions & Outreach",
+            details: "Partner with practical care, evangelism, and community transformation.",
+            button_label: "Partner",
+            button_url: "#contact",
+            sort_order: 2,
+          },
+          {
+            id: "g3",
+            method_name: "Building Fund",
+            details: "Help create excellent spaces for worship, children, and training.",
+            button_label: "Support",
+            button_url: "#contact",
+            sort_order: 3,
+          },
+        ],
+        gallery_items: [
+          {
+            id: "p1",
+            image_url:
+              "https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1300&q=85",
+            caption: "Worship gathering",
+            alt_text: "Church worship gathering",
+            sort_order: 1,
+          },
+          {
+            id: "p2",
+            image_url:
+              "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=1000&q=85",
+            caption: "Community fellowship",
+            alt_text: "People sharing community fellowship",
+            sort_order: 2,
+          },
+          {
+            id: "p3",
+            image_url:
+              "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1000&q=85",
+            caption: "Serving together",
+            alt_text: "Volunteers serving together",
+            sort_order: 3,
+          },
+          {
+            id: "p4",
+            image_url:
+              "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1000&q=85",
+            caption: "Leadership training",
+            alt_text: "People gathered for training",
+            sort_order: 4,
+          },
+          {
+            id: "p5",
+            image_url:
+              "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=85",
+            caption: "Growing in community",
+            alt_text: "Happy group in community",
+            sort_order: 5,
+          },
+        ],
+        prayer_requests: [],
+        contact_messages: [],
+      };
+
+      const publicTables = [
+        "site_settings",
+        "announcements",
+        "service_times",
+        "ministries",
+        "sermons",
+        "events",
+        "giving_methods",
+        "gallery_items",
+      ];
+
+      const adminTabs = [
+        ["overview", "Overview"],
+        ["site", "Site"],
+        ["services", "Services"],
+        ["ministries", "Ministries"],
+        ["sermons", "Sermons"],
+        ["events", "Events"],
+        ["announcements", "Announcements"],
+        ["giving", "Giving"],
+        ["gallery", "Gallery"],
+        ["messages", "Messages"],
+        ["account", "Account"],
+      ];
+
+      const collectionConfig = {
+        services: {
+          title: "Services",
+          singular: "Service",
+          table: "service_times",
+          upsert: "admin_upsert_service_time",
+          empty: {
+            label: "",
+            day_label: "",
+            time_label: "",
+            location: "",
+            description: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["label", "Title", "text"],
+            ["day_label", "Day", "text"],
+            ["time_label", "Time", "text"],
+            ["location", "Location", "text"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["description", "Description", "textarea", "full"],
+          ],
+        },
+        ministries: {
+          title: "Ministries",
+          singular: "Ministry",
+          table: "ministries",
+          upsert: "admin_upsert_ministry",
+          empty: {
+            title: "",
+            description: "",
+            leader: "",
+            meeting_time: "",
+            image_url: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["title", "Title", "text"],
+            ["leader", "Leader", "text"],
+            ["meeting_time", "Meeting Time", "text"],
+            ["image_url", "Image URL", "url"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["description", "Description", "textarea", "full"],
+          ],
+        },
+        sermons: {
+          title: "Sermons",
+          singular: "Sermon",
+          table: "sermons",
+          upsert: "admin_upsert_sermon",
+          empty: {
+            title: "",
+            speaker: "",
+            scripture: "",
+            sermon_date: "",
+            media_url: "",
+            audio_url: "",
+            notes: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["title", "Title", "text"],
+            ["speaker", "Speaker", "text"],
+            ["scripture", "Scripture", "text"],
+            ["sermon_date", "Date", "date"],
+            ["media_url", "Video", "upload-video", "full"],
+            ["audio_url", "Audio", "upload-audio", "full"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["notes", "Notes", "textarea", "full"],
+          ],
+        },
+        events: {
+          title: "Events",
+          singular: "Event",
+          table: "events",
+          upsert: "admin_upsert_event",
+          empty: {
+            title: "",
+            event_date: "",
+            event_time: "",
+            location: "",
+            description: "",
+            registration_url: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["title", "Title", "text"],
+            ["event_date", "Date", "date"],
+            ["event_time", "Time", "text"],
+            ["location", "Location", "text"],
+            ["registration_url", "Registration URL", "url"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["description", "Description", "textarea", "full"],
+          ],
+        },
+        announcements: {
+          title: "Announcements",
+          singular: "Announcement",
+          table: "announcements",
+          upsert: "admin_upsert_announcement",
+          empty: {
+            title: "",
+            summary: "",
+            starts_on: "",
+            ends_on: "",
+            accent: "#008c8c",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["title", "Title", "text"],
+            ["starts_on", "Starts", "date"],
+            ["ends_on", "Ends", "date"],
+            ["accent", "Accent", "color"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["summary", "Summary", "textarea", "full"],
+          ],
+        },
+        giving: {
+          title: "Giving",
+          singular: "Giving Method",
+          table: "giving_methods",
+          upsert: "admin_upsert_giving_method",
+          empty: {
+            method_name: "",
+            details: "",
+            button_label: "",
+            button_url: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["method_name", "Name", "text"],
+            ["button_label", "Button", "text"],
+            ["button_url", "Button URL", "url"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+            ["details", "Details", "textarea", "full"],
+          ],
+        },
+        gallery: {
+          title: "Gallery",
+          singular: "Gallery Item",
+          table: "gallery_items",
+          upsert: "admin_upsert_gallery_item",
+          empty: {
+            image_url: "",
+            alt_text: "",
+            caption: "",
+            category: "",
+            sort_order: 0,
+            is_published: true,
+          },
+          fields: [
+            ["image_url", "Image", "upload-image", "full"],
+            ["caption", "Caption", "text"],
+            ["alt_text", "Alt Text", "text"],
+            ["category", "Category", "text"],
+            ["sort_order", "Order", "number"],
+            ["is_published", "Published", "checkbox"],
+          ],
+        },
+      };
+
+      function cx(...classes) {
+        return classes.filter(Boolean).join(" ");
+      }
+
+      function icon(name) {
+        return <i data-lucide={name} aria-hidden="true"></i>;
+      }
+
+      function formatDate(value, options = {}) {
+        if (!value) return "";
+        const date = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return new Intl.DateTimeFormat("en", {
+          month: "short",
+          day: "numeric",
+          year: options.year ? "numeric" : undefined,
+        }).format(date);
+      }
+
+      function dateParts(value) {
+        if (!value) return { month: "", day: "" };
+        const date = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return { month: "", day: "" };
+        return {
+          month: new Intl.DateTimeFormat("en", { month: "short" }).format(date),
+          day: new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date),
+        };
+      }
+
+      function sortedRows(rows) {
+        return [...(rows || [])].sort((a, b) => {
+          const order = (a.sort_order || 0) - (b.sort_order || 0);
+          if (order !== 0) return order;
+          return String(a.title || a.label || a.method_name || "").localeCompare(
+            String(b.title || b.label || b.method_name || "")
+          );
+        });
+      }
+
+      const DEFAULT_FAVICON =
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23008c8c'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Arial' font-size='24' font-weight='900' fill='white'%3ELD%3C/text%3E%3C/svg%3E";
+
+      function normalizeMediaArray(value, fallback = []) {
+        if (Array.isArray(value)) return value.filter(Boolean);
+        if (typeof value === "string" && value.trim()) {
+          try {
+            const parsed = JSON.parse(value);
+            return Array.isArray(parsed) ? parsed.filter(Boolean) : [value];
+          } catch {
+            return [value];
+          }
+        }
+        return fallback.filter(Boolean);
+      }
+
+      function getHeroSlides(settings) {
+        const slides = normalizeMediaArray(settings.hero_slides);
+        if (slides.length) return slides;
+        return [settings.hero_image_url || fallbackData.site_settings.hero_image_url].filter(Boolean);
+      }
+
+      function isDataUrl(value) {
+        return typeof value === "string" && value.startsWith("data:");
+      }
+
+      function isVideoSource(value) {
+        if (!value) return false;
+        return value.startsWith("data:video") || /\.(mp4|webm|ogg)(\?.*)?$/i.test(value);
+      }
+
+      function isAudioSource(value) {
+        if (!value) return false;
+        return value.startsWith("data:audio") || /\.(mp3|wav|m4a|aac|ogg)(\?.*)?$/i.test(value);
+      }
+
+      function mediaLimitFor(kind) {
+        if (kind === "video") return 30;
+        if (kind === "audio") return 18;
+        return 5;
+      }
+
+      function readFileAsDataUrl(file, kind = "image") {
+        const maxMb = mediaLimitFor(kind);
+        if (file.size > maxMb * 1024 * 1024) {
+          return Promise.reject(new Error(`File must be ${maxMb}MB or smaller.`));
+        }
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("File could not be read."));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function setSiteFavicon(logoUrl) {
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+          link = document.createElement("link");
+          link.rel = "icon";
+          document.head.appendChild(link);
+        }
+        link.href = logoUrl || DEFAULT_FAVICON;
+      }
+
+      function App() {
+        const [data, setData] = useState(fallbackData);
+        const [loading, setLoading] = useState(Boolean(supabaseClient));
+        const [menuOpen, setMenuOpen] = useState(false);
+        const [adminToken, setAdminToken] = useState(() => localStorage.getItem("lodc_admin_token") || "");
+        const [adminUser, setAdminUser] = useState(null);
+        const [adminData, setAdminData] = useState(fallbackData);
+        const [adminTab, setAdminTab] = useState("overview");
+        const [notice, setNotice] = useState("");
+
+        const loadPublicData = useCallback(async () => {
+          if (!supabaseClient) {
+            setLoading(false);
+            return;
+          }
+
+          try {
+            const today = new Date().toISOString().slice(0, 10);
+            const [
+              settings,
+              announcements,
+              services,
+              ministries,
+              sermons,
+              events,
+              giving,
+              gallery,
+            ] = await Promise.all([
+              supabaseClient.from("site_settings").select("*").eq("id", 1).maybeSingle(),
+              supabaseClient
+                .from("announcements")
+                .select("*")
+                .eq("is_published", true)
+                .or(`ends_on.is.null,ends_on.gte.${today}`)
+                .order("sort_order", { ascending: true }),
+              supabaseClient
+                .from("service_times")
+                .select("*")
+                .eq("is_published", true)
+                .order("sort_order", { ascending: true }),
+              supabaseClient
+                .from("ministries")
+                .select("*")
+                .eq("is_published", true)
+                .order("sort_order", { ascending: true }),
+              supabaseClient
+                .from("sermons")
+                .select("*")
+                .eq("is_published", true)
+                .order("sermon_date", { ascending: false }),
+              supabaseClient
+                .from("events")
+                .select("*")
+                .eq("is_published", true)
+                .gte("event_date", today)
+                .order("event_date", { ascending: true }),
+              supabaseClient
+                .from("giving_methods")
+                .select("*")
+                .eq("is_published", true)
+                .order("sort_order", { ascending: true }),
+              supabaseClient
+                .from("gallery_items")
+                .select("*")
+                .eq("is_published", true)
+                .order("sort_order", { ascending: true }),
+            ]);
+
+            const responses = [settings, announcements, services, ministries, sermons, events, giving, gallery];
+            const failed = responses.find((response) => response.error);
+            if (failed) throw failed.error;
+
+            setData((current) => ({
+              ...current,
+              site_settings: settings.data || fallbackData.site_settings,
+              announcements: announcements.data?.length ? announcements.data : fallbackData.announcements,
+              service_times: services.data?.length ? services.data : fallbackData.service_times,
+              ministries: ministries.data?.length ? ministries.data : fallbackData.ministries,
+              sermons: sermons.data?.length ? sermons.data : fallbackData.sermons,
+              events: events.data?.length ? events.data : fallbackData.events,
+              giving_methods: giving.data?.length ? giving.data : fallbackData.giving_methods,
+              gallery_items: gallery.data?.length ? gallery.data : fallbackData.gallery_items,
+            }));
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setLoading(false);
+          }
+        }, []);
+
+        const loadDashboard = useCallback(
+          async (token = adminToken) => {
+            if (!supabaseClient || !token) return;
+            const { data: dashboard, error } = await supabaseClient.rpc("admin_get_dashboard", {
+              p_token: token,
+            });
+            if (error) {
+              localStorage.removeItem("lodc_admin_token");
+              setAdminToken("");
+              setAdminUser(null);
+              return;
+            }
+            setAdminData({
+              ...fallbackData,
+              ...dashboard,
+              site_settings: dashboard.site_settings || fallbackData.site_settings,
+            });
+          },
+          [adminToken]
+        );
+
+        useEffect(() => {
+          loadPublicData();
+        }, [loadPublicData]);
+
+        useEffect(() => {
+          if (!window.lucide) return;
+          window.lucide.createIcons();
+        }, [data, adminData, adminTab, menuOpen, adminUser, notice]);
+
+        useEffect(() => {
+          if (!supabaseClient) return;
+          const channel = supabaseClient.channel("land-of-dunamise-live");
+          publicTables.forEach((table) => {
+            channel.on("postgres_changes", { event: "*", schema: "public", table }, () => {
+              loadPublicData();
+              if (adminToken) loadDashboard(adminToken);
+            });
+          });
+          channel.subscribe();
+          return () => {
+            supabaseClient.removeChannel(channel);
+          };
+        }, [loadPublicData, loadDashboard, adminToken]);
+
+        useEffect(() => {
+          async function restoreAdmin() {
+            if (!supabaseClient || !adminToken) return;
+            const { data: me, error } = await supabaseClient.rpc("admin_me", { p_token: adminToken });
+            if (error || !me?.admin) {
+              localStorage.removeItem("lodc_admin_token");
+              setAdminToken("");
+              return;
+            }
+            setAdminUser(me.admin);
+            loadDashboard(adminToken);
+          }
+          restoreAdmin();
+        }, [adminToken, loadDashboard]);
+
+        const settings = data.site_settings || fallbackData.site_settings;
+
+        useEffect(() => {
+          setSiteFavicon(settings.logo_url);
+        }, [settings.logo_url]);
+
+        async function handleLogin(credentials) {
+          setNotice("");
+          if (!supabaseClient) {
+            setNotice("Connection unavailable.");
+            return;
+          }
+          const { data: result, error } = await supabaseClient.rpc("admin_login", {
+            p_username: credentials.username,
+            p_password: credentials.password,
+          });
+          if (error || !result?.token) {
+            setNotice("Invalid credentials.");
+            return;
+          }
+          localStorage.setItem("lodc_admin_token", result.token);
+          setAdminToken(result.token);
+          setAdminUser(result.admin);
+          setNotice("Signed in.");
+          loadDashboard(result.token);
+        }
+
+        async function handleLogout() {
+          if (supabaseClient && adminToken) {
+            await supabaseClient.rpc("admin_logout", { p_token: adminToken });
+          }
+          localStorage.removeItem("lodc_admin_token");
+          setAdminToken("");
+          setAdminUser(null);
+          setNotice("");
+        }
+
+        async function saveSite(payload) {
+          if (!supabaseClient || !adminToken) return;
+          const { data: saved, error } = await supabaseClient.rpc("admin_update_site_settings", {
+            p_token: adminToken,
+            p_payload: payload,
+          });
+          if (error) {
+            setNotice(error.message);
+            return;
+          }
+          setAdminData((current) => ({ ...current, site_settings: saved }));
+          setData((current) => ({ ...current, site_settings: saved }));
+          setNotice("Saved.");
+        }
+
+        async function saveCollection(config, payload) {
+          if (!supabaseClient || !adminToken) return;
+          const { error } = await supabaseClient.rpc(config.upsert, {
+            p_token: adminToken,
+            p_payload: payload,
+          });
+          if (error) {
+            setNotice(error.message);
+            return;
+          }
+          setNotice("Saved.");
+          await loadDashboard(adminToken);
+          await loadPublicData();
+        }
+
+        async function deleteCollectionRow(table, id) {
+          if (!supabaseClient || !adminToken || !id) return;
+          const { error } = await supabaseClient.rpc("admin_delete_content", {
+            p_token: adminToken,
+            p_table: table,
+            p_id: id,
+          });
+          if (error) {
+            setNotice(error.message);
+            return;
+          }
+          setNotice("Deleted.");
+          await loadDashboard(adminToken);
+          await loadPublicData();
+        }
+
+        async function updatePrayer(id, status, isPublic) {
+          if (!supabaseClient || !adminToken) return;
+          const { error } = await supabaseClient.rpc("admin_update_prayer_request", {
+            p_token: adminToken,
+            p_id: id,
+            p_status: status,
+            p_is_public: isPublic,
+          });
+          if (!error) loadDashboard(adminToken);
+        }
+
+        async function updateMessage(id, status) {
+          if (!supabaseClient || !adminToken) return;
+          const { error } = await supabaseClient.rpc("admin_update_contact_message", {
+            p_token: adminToken,
+            p_id: id,
+            p_status: status,
+          });
+          if (!error) loadDashboard(adminToken);
+        }
+
+        async function changeCredentials(payload) {
+          if (!supabaseClient || !adminToken) return;
+          const { data: result, error } = await supabaseClient.rpc("admin_change_credentials", {
+            p_token: adminToken,
+            p_username: payload.username,
+            p_password: payload.password,
+            p_display_name: payload.display_name,
+          });
+          if (error) {
+            setNotice(error.message);
+            return;
+          }
+          setAdminUser(result.admin);
+          setNotice("Account updated.");
+        }
+
+        return (
+          <div className="app-shell">
+            <Header settings={settings} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+            <main>
+              <Hero settings={settings} services={data.service_times} />
+              <AnnouncementStrip announcements={data.announcements} />
+              <About settings={settings} />
+              <Services services={data.service_times} />
+              <Ministries ministries={data.ministries} />
+              <Sermons sermons={data.sermons} />
+              <Events events={data.events} />
+              <Gallery gallery={data.gallery_items} />
+              <Giving giving={data.giving_methods} />
+              <PrayerContact settings={settings} />
+              <Admin
+                adminUser={adminUser}
+                adminData={adminData}
+                adminTab={adminTab}
+                setAdminTab={setAdminTab}
+                notice={notice}
+                onLogin={handleLogin}
+                onLogout={handleLogout}
+                onSaveSite={saveSite}
+                onSaveCollection={saveCollection}
+                onDeleteRow={deleteCollectionRow}
+                onUpdatePrayer={updatePrayer}
+                onUpdateMessage={updateMessage}
+                onChangeCredentials={changeCredentials}
+              />
+            </main>
+            <Footer settings={settings} />
+          </div>
+        );
+      }
+
+      function Header({ settings, menuOpen, setMenuOpen }) {
+        const nav = [
+          ["#home", "Home"],
+          ["#about", "About"],
+          ["#services", "Services"],
+          ["#ministries", "Ministries"],
+          ["#sermons", "Sermons"],
+          ["#events", "Events"],
+          ["#contact", "Contact"],
+        ];
+        return (
+          <header className="site-header">
+            <div className="header-inner">
+              <a className="brand" href="#home" aria-label={settings.church_name}>
+                <span className="brand-mark">
+                  {settings.logo_url ? <img src={settings.logo_url} alt="" /> : "LD"}
+                </span>
+                <span className="brand-text">
+                  <span className="brand-title">{settings.church_name}</span>
+                  <span className="brand-subtitle">Faith. Family. Dominion.</span>
+                </span>
+              </a>
+              <nav className={cx("nav-links", menuOpen && "open")} aria-label="Primary navigation">
+                {nav.map(([href, label]) => (
+                  <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+                    {label}
+                  </a>
+                ))}
+              </nav>
+              <div className="header-actions">
+                <a className="btn primary" href="#giving">
+                  {icon("heart-handshake")}
+                  Give
+                </a>
+                <button
+                  className="icon-button menu-button"
+                  type="button"
+                  aria-label="Menu"
+                  onClick={() => setMenuOpen((open) => !open)}
+                >
+                  {icon(menuOpen ? "x" : "menu")}
+                </button>
+              </div>
+            </div>
+          </header>
+        );
+      }
+
+      function Hero({ settings, services }) {
+        const next = sortedRows(services)[0] || fallbackData.service_times[0];
+        const heroSlides = getHeroSlides(settings);
+        const [activeSlide, setActiveSlide] = useState(0);
+        const activeHeroImage = heroSlides[activeSlide % heroSlides.length] || fallbackData.site_settings.hero_image_url;
+
+        useEffect(() => {
+          setActiveSlide(0);
+        }, [settings.hero_slides, settings.hero_image_url]);
+
+        useEffect(() => {
+          if (heroSlides.length < 2) return undefined;
+          const timer = window.setInterval(() => {
+            setActiveSlide((index) => (index + 1) % heroSlides.length);
+          }, 6500);
+          return () => window.clearInterval(timer);
+        }, [heroSlides.length]);
+
+        return (
+          <section
+            id="home"
+            className="hero"
+            style={{ "--hero-image": `url("${activeHeroImage}")` }}
+          >
+            <div className="hero-inner">
+              <div className="hero-copy">
+                <div className="hero-eyebrow">{icon("sparkles")} Welcome Home</div>
+                <h1 className="hero-title">{settings.church_name}</h1>
+                <p className="hero-text">{settings.tagline}</p>
+                <div className="hero-actions">
+                  <a className="btn primary" href="#services">
+                    {icon("calendar-days")}
+                    Join a Service
+                  </a>
+                  <a className="btn ghost" href="#contact">
+                    {icon("message-circle-heart")}
+                    Request Prayer
+                  </a>
+                </div>
+                {heroSlides.length > 1 && (
+                  <div className="hero-dots" aria-label="Hero slideshow">
+                    {heroSlides.map((slide, index) => (
+                      <button
+                        key={`${slide}-${index}`}
+                        className={activeSlide === index ? "active" : ""}
+                        type="button"
+                        aria-label={`Hero slide ${index + 1}`}
+                        onClick={() => setActiveSlide(index)}
+                      ></button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="hero-panel">
+                <div className="next-service">
+                  <strong>{next.label}</strong>
+                  <span>
+                    {next.day_label} at {next.time_label} - {next.location}
+                  </span>
+                </div>
+                <div className="hero-metrics">
+                  <div className="metric-chip">
+                    <b>3</b>
+                    <span>Weekly gatherings</span>
+                  </div>
+                  <div className="metric-chip">
+                    <b>7</b>
+                    <span>Serving paths</span>
+                  </div>
+                  <div className="metric-chip">
+                    <b>1</b>
+                    <span>Church family</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function AnnouncementStrip({ announcements }) {
+        const rows = sortedRows(announcements).slice(0, 3);
+        if (!rows.length) return null;
+        return (
+          <section className="announcement-strip">
+            <div className="container announcement-track">
+              {rows.map((item) => (
+                <article key={item.id} className="announcement-card" style={{ "--accent": item.accent || "#008c8c" }}>
+                  <small>{formatDate(item.starts_on, { year: true })}</small>
+                  <h3>{item.title}</h3>
+                  <p>{item.summary}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      }
+
+      function About({ settings }) {
+        return (
+          <section id="about" className="section">
+            <div className="container split-grid">
+              <div className="image-stack">
+                <img
+                  src="https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=1300&q=85"
+                  alt="Church worship gathering"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=900&q=85"
+                  alt="Church community fellowship"
+                />
+              </div>
+              <div>
+                <span className="section-kicker">Our Heart</span>
+                <h2 className="section-heading">{settings.welcome_title}</h2>
+                <p className="section-lede">{settings.welcome_body}</p>
+                <div className="value-list">
+                  <article className="value-item" style={{ "--accent": "var(--teal)" }}>
+                    {icon("book-open-check")}
+                    <h3>Biblical Teaching</h3>
+                    <p>Clear, practical, Spirit-led teaching that forms mature disciples.</p>
+                  </article>
+                  <article className="value-item" style={{ "--accent": "var(--coral)" }}>
+                    {icon("users-round")}
+                    <h3>Family Community</h3>
+                    <p>A welcoming church home where every generation is seen and valued.</p>
+                  </article>
+                  <article className="value-item" style={{ "--accent": "var(--leaf)" }}>
+                    {icon("hand-heart")}
+                    <h3>Compassionate Service</h3>
+                    <p>Practical care for people in the church and throughout the city.</p>
+                  </article>
+                  <article className="value-item" style={{ "--accent": "var(--plum)" }}>
+                    {icon("flame")}
+                    <h3>Prayer & Worship</h3>
+                    <p>Gatherings shaped by reverence, joy, intercession, and expectation.</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Services({ services }) {
+        const rows = sortedRows(services);
+        return (
+          <section id="services" className="section band">
+            <div className="container">
+              <span className="section-kicker">Gatherings</span>
+              <h2 className="section-heading">Services for worship, word, prayer, and growth.</h2>
+              <p className="section-lede">Each gathering is designed to help people meet Christ, grow in faith, and walk in love.</p>
+              <div className="service-grid">
+                {rows.map((service) => (
+                  <article key={service.id} className="service-time">
+                    <div>
+                      {icon("calendar-heart")}
+                      <h3>{service.label}</h3>
+                      <p>{service.description}</p>
+                    </div>
+                    <div>
+                      <span className="time-label">
+                        {icon("clock")}
+                        {service.day_label} - {service.time_label}
+                      </span>
+                      <p style={{ marginTop: 10, fontWeight: 800 }}>{service.location}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Ministries({ ministries }) {
+        const rows = sortedRows(ministries);
+        return (
+          <section id="ministries" className="section">
+            <div className="container">
+              <span className="section-kicker">Ministries</span>
+              <h2 className="section-heading">Places to belong, grow, and serve faithfully.</h2>
+              <p className="section-lede">From children to outreach, every ministry exists to form disciples and bless people.</p>
+              <div className="ministry-grid">
+                {rows.map((ministry) => (
+                  <article key={ministry.id} className="ministry-card">
+                    {ministry.image_url && <img className="card-media" src={ministry.image_url} alt={ministry.title} />}
+                    <div>
+                      {icon("sparkle")}
+                      <h3>{ministry.title}</h3>
+                      <p>{ministry.description}</p>
+                    </div>
+                    <div className="sermon-meta">
+                      <span>{ministry.leader}</span>
+                      <span>{ministry.meeting_time}</span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Sermons({ sermons }) {
+        const rows = sortedRows(sermons).slice(0, 6);
+        return (
+          <section id="sermons" className="section band">
+            <div className="container">
+              <span className="section-kicker">Sermons</span>
+              <h2 className="section-heading">Recent messages for faith, wisdom, and strength.</h2>
+              <p className="section-lede">Watch, listen, and revisit the latest teaching from Land of Dunamise Chapel.</p>
+              <div className="sermon-grid">
+                {rows.map((sermon) => (
+                  <article key={sermon.id} className="sermon-card">
+                    <div>
+                      {icon("radio")}
+                      <h3>{sermon.title}</h3>
+                      <p>{sermon.notes}</p>
+                    </div>
+                    <div>
+                      <div className="sermon-meta">
+                        <span>{sermon.speaker}</span>
+                        <span>{sermon.scripture}</span>
+                        <span>{formatDate(sermon.sermon_date, { year: true })}</span>
+                      </div>
+                      <div className="sermon-media">
+                        {sermon.media_url &&
+                          (isVideoSource(sermon.media_url) ? (
+                            <video src={sermon.media_url} controls preload="metadata"></video>
+                          ) : (
+                            <a className="btn secondary" href={sermon.media_url} target="_blank" rel="noreferrer">
+                              {icon("play-circle")}
+                              Watch
+                            </a>
+                          ))}
+                        {sermon.audio_url &&
+                          (isAudioSource(sermon.audio_url) ? (
+                            <audio src={sermon.audio_url} controls preload="metadata"></audio>
+                          ) : (
+                            <a className="btn secondary" href={sermon.audio_url} target="_blank" rel="noreferrer">
+                              {icon("headphones")}
+                              Listen
+                            </a>
+                          ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Events({ events }) {
+        const rows = sortedRows(events).slice(0, 6);
+        return (
+          <section id="events" className="section">
+            <div className="container">
+              <span className="section-kicker">Calendar</span>
+              <h2 className="section-heading">Upcoming moments for worship, service, and fellowship.</h2>
+              <p className="section-lede">Stay connected to what is happening across the church family.</p>
+              <div className="event-grid">
+                {rows.map((event) => {
+                  const parts = dateParts(event.event_date);
+                  return (
+                    <article key={event.id} className="event-card">
+                      <div className="event-date">
+                        <div>
+                          <span>{parts.month}</span>
+                          <strong>{parts.day}</strong>
+                        </div>
+                      </div>
+                      <div>
+                        <h3>{event.title}</h3>
+                        <p>{event.description}</p>
+                        <div className="sermon-meta" style={{ marginTop: 12 }}>
+                          <span>{event.event_time}</span>
+                          <span>{event.location}</span>
+                        </div>
+                        {event.registration_url && (
+                          <a className="btn secondary" style={{ marginTop: 14 }} href={event.registration_url} target="_blank" rel="noreferrer">
+                            {icon("external-link")}
+                            Register
+                          </a>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Gallery({ gallery }) {
+        const rows = sortedRows(gallery).slice(0, 5);
+        const [activeGallery, setActiveGallery] = useState(0);
+        const featured = rows[activeGallery % Math.max(rows.length, 1)];
+
+        useEffect(() => {
+          setActiveGallery(0);
+        }, [gallery]);
+
+        useEffect(() => {
+          if (rows.length < 2) return undefined;
+          const timer = window.setInterval(() => {
+            setActiveGallery((index) => (index + 1) % rows.length);
+          }, 5200);
+          return () => window.clearInterval(timer);
+        }, [rows.length]);
+
+        return (
+          <section className="section band">
+            <div className="container">
+              <span className="section-kicker">Gallery</span>
+              <h2 className="section-heading">A picture of worship, service, and shared life.</h2>
+              {featured && (
+                <div className="gallery-showcase">
+                  <img src={featured.image_url} alt={featured.alt_text || featured.caption || "Church gallery"} />
+                  <div className="gallery-showcase-caption">
+                    <span>{featured.caption}</span>
+                    {rows.length > 1 && (
+                      <div className="gallery-controls">
+                        <button
+                          type="button"
+                          aria-label="Previous gallery image"
+                          onClick={() => setActiveGallery((index) => (index - 1 + rows.length) % rows.length)}
+                        >
+                          {icon("chevron-left")}
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Next gallery image"
+                          onClick={() => setActiveGallery((index) => (index + 1) % rows.length)}
+                        >
+                          {icon("chevron-right")}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              <div className="gallery-grid">
+                {rows.map((item) => (
+                  <figure className="gallery-item" key={item.id}>
+                    <img src={item.image_url} alt={item.alt_text || item.caption || "Church gallery"} />
+                    <figcaption className="gallery-caption">{item.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Giving({ giving }) {
+        const rows = sortedRows(giving);
+        return (
+          <section id="giving" className="section">
+            <div className="container">
+              <span className="section-kicker">Giving</span>
+              <h2 className="section-heading">Generosity fuels worship, care, outreach, and mission.</h2>
+              <p className="section-lede">Every gift helps people encounter Christ and receive practical support through the local church.</p>
+              <div className="giving-grid">
+                {rows.map((method) => (
+                  <article key={method.id} className="giving-card">
+                    <div>
+                      {icon("badge-dollar-sign")}
+                      <h3>{method.method_name}</h3>
+                      <p>{method.details}</p>
+                    </div>
+                    {method.button_url && (
+                      <a className="btn primary" href={method.button_url} target={method.button_url.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                        {icon("arrow-up-right")}
+                        {method.button_label || "Give"}
+                      </a>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function PrayerContact({ settings }) {
+        const [contact, setContact] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+        const [prayer, setPrayer] = useState({ name: "", email: "", phone: "", request_text: "" });
+        const [status, setStatus] = useState("");
+
+        async function submitContact(event) {
+          event.preventDefault();
+          setStatus("");
+          if (!supabaseClient) {
+            setStatus("Connection unavailable.");
+            return;
+          }
+          const { error } = await supabaseClient.from("contact_messages").insert(contact);
+          if (error) {
+            setStatus("Message could not be sent.");
+            return;
+          }
+          setContact({ name: "", email: "", phone: "", subject: "", message: "" });
+          setStatus("Message received.");
+        }
+
+        async function submitPrayer(event) {
+          event.preventDefault();
+          setStatus("");
+          if (!supabaseClient) {
+            setStatus("Connection unavailable.");
+            return;
+          }
+          const { error } = await supabaseClient.from("prayer_requests").insert(prayer);
+          if (error) {
+            setStatus("Prayer request could not be sent.");
+            return;
+          }
+          setPrayer({ name: "", email: "", phone: "", request_text: "" });
+          setStatus("Prayer request received.");
+        }
+
+        return (
+          <section id="contact" className="section band">
+            <div className="container">
+              <span className="section-kicker">Prayer & Contact</span>
+              <h2 className="section-heading">Connect with the church family.</h2>
+              <p className="section-lede">Share a message, request prayer, or reach the ministry office.</p>
+              <div className="prayer-contact">
+                <div className="contact-panel">
+                  <h3>{settings.church_name}</h3>
+                  <p>{settings.tagline}</p>
+                  <div className="contact-list">
+                    <a className="contact-row" href={`mailto:${settings.email}`}>
+                      {icon("mail")}
+                      <span>{settings.email}</span>
+                    </a>
+                    <a className="contact-row" href={`tel:${settings.phone}`}>
+                      {icon("phone")}
+                      <span>{settings.phone}</span>
+                    </a>
+                    <div className="contact-row">
+                      {icon("map-pin")}
+                      <span>{settings.address}</span>
+                    </div>
+                    {settings.live_stream_url && (
+                      <a className="contact-row" href={settings.live_stream_url} target="_blank" rel="noreferrer">
+                        {icon("youtube")}
+                        <span>Live stream</span>
+                      </a>
+                    )}
+                  </div>
+                  {settings.map_embed_url && (
+                    <iframe className="map-frame" title="Church location" loading="lazy" src={settings.map_embed_url}></iframe>
+                  )}
+                </div>
+
+                <div className="form-panel">
+                  <form onSubmit={submitContact} className="form-grid">
+                    <div className="field">
+                      <label htmlFor="contact-name">Name</label>
+                      <input
+                        id="contact-name"
+                        required
+                        value={contact.name}
+                        onChange={(event) => setContact({ ...contact, name: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="contact-email">Email</label>
+                      <input
+                        id="contact-email"
+                        type="email"
+                        required
+                        value={contact.email}
+                        onChange={(event) => setContact({ ...contact, email: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="contact-phone">Phone</label>
+                      <input
+                        id="contact-phone"
+                        value={contact.phone}
+                        onChange={(event) => setContact({ ...contact, phone: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="contact-subject">Subject</label>
+                      <input
+                        id="contact-subject"
+                        required
+                        value={contact.subject}
+                        onChange={(event) => setContact({ ...contact, subject: event.target.value })}
+                      />
+                    </div>
+                    <div className="field full">
+                      <label htmlFor="contact-message">Message</label>
+                      <textarea
+                        id="contact-message"
+                        required
+                        value={contact.message}
+                        onChange={(event) => setContact({ ...contact, message: event.target.value })}
+                      ></textarea>
+                    </div>
+                    <div className="form-actions field full">
+                      <button className="btn primary" type="submit">
+                        {icon("send")}
+                        Send Message
+                      </button>
+                    </div>
+                  </form>
+
+                  <form onSubmit={submitPrayer} className="form-grid" style={{ marginTop: 24 }}>
+                    <div className="field">
+                      <label htmlFor="prayer-name">Name</label>
+                      <input
+                        id="prayer-name"
+                        required
+                        value={prayer.name}
+                        onChange={(event) => setPrayer({ ...prayer, name: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="prayer-email">Email</label>
+                      <input
+                        id="prayer-email"
+                        type="email"
+                        value={prayer.email}
+                        onChange={(event) => setPrayer({ ...prayer, email: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="prayer-phone">Phone</label>
+                      <input
+                        id="prayer-phone"
+                        value={prayer.phone}
+                        onChange={(event) => setPrayer({ ...prayer, phone: event.target.value })}
+                      />
+                    </div>
+                    <div className="field full">
+                      <label htmlFor="prayer-text">Prayer Request</label>
+                      <textarea
+                        id="prayer-text"
+                        required
+                        value={prayer.request_text}
+                        onChange={(event) => setPrayer({ ...prayer, request_text: event.target.value })}
+                      ></textarea>
+                    </div>
+                    <div className="form-actions field full">
+                      <button className="btn secondary" type="submit">
+                        {icon("hand-heart")}
+                        Submit Prayer
+                      </button>
+                      <span className="form-status">{status}</span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Admin({
+        adminUser,
+        adminData,
+        adminTab,
+        setAdminTab,
+        notice,
+        onLogin,
+        onLogout,
+        onSaveSite,
+        onSaveCollection,
+        onDeleteRow,
+        onUpdatePrayer,
+        onUpdateMessage,
+        onChangeCredentials,
+      }) {
+        const [credentials, setCredentials] = useState({ username: "", password: "" });
+
+        return (
+          <section id="admin" className="section admin-section">
+            <div className="container">
+              <span className="section-kicker">Administration</span>
+              <h2 className="section-heading">Church content dashboard.</h2>
+              <p className="section-lede">Manage the public website, submissions, and administrator account.</p>
+              <div className="admin-shell">
+                {!adminUser ? (
+                  <form
+                    className="admin-login"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      onLogin(credentials);
+                    }}
+                  >
+                    <div className="field">
+                      <label htmlFor="admin-username">Username</label>
+                      <input
+                        id="admin-username"
+                        autoComplete="username"
+                        value={credentials.username}
+                        onChange={(event) => setCredentials({ ...credentials, username: event.target.value })}
+                      />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="admin-password">Password</label>
+                      <input
+                        id="admin-password"
+                        type="password"
+                        autoComplete="current-password"
+                        value={credentials.password}
+                        onChange={(event) => setCredentials({ ...credentials, password: event.target.value })}
+                      />
+                    </div>
+                    <div className="form-actions">
+                      <button className="btn primary" type="submit">
+                        {icon("shield-check")}
+                        Sign In
+                      </button>
+                      <span className="form-status">{notice}</span>
+                    </div>
+                  </form>
+                ) : (
+                  <div>
+                    <div className="admin-tabs">
+                      {adminTabs.map(([key, label]) => (
+                        <button
+                          key={key}
+                          type="button"
+                          className={adminTab === key ? "active" : ""}
+                          onClick={() => setAdminTab(key)}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                      <button type="button" onClick={onLogout}>
+                        Sign Out
+                      </button>
+                    </div>
+                    {notice && <p className="form-status">{notice}</p>}
+                    <AdminContent
+                      active={adminTab}
+                      adminUser={adminUser}
+                      adminData={adminData}
+                      onSaveSite={onSaveSite}
+                      onSaveCollection={onSaveCollection}
+                      onDeleteRow={onDeleteRow}
+                      onUpdatePrayer={onUpdatePrayer}
+                      onUpdateMessage={onUpdateMessage}
+                      onChangeCredentials={onChangeCredentials}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function AdminContent({
+        active,
+        adminUser,
+        adminData,
+        onSaveSite,
+        onSaveCollection,
+        onDeleteRow,
+        onUpdatePrayer,
+        onUpdateMessage,
+        onChangeCredentials,
+      }) {
+        if (active === "overview") {
+          const stats = [
+            ["Services", adminData.service_times?.length || 0],
+            ["Ministries", adminData.ministries?.length || 0],
+            ["Events", adminData.events?.length || 0],
+            ["Messages", (adminData.contact_messages?.length || 0) + (adminData.prayer_requests?.length || 0)],
+          ];
+          return (
+            <div className="dashboard-stats">
+              {stats.map(([label, count]) => (
+                <div key={label} className="dashboard-stat">
+                  <b>{count}</b>
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+          );
+        }
+
+        if (active === "site") {
+          return <SiteSettingsForm settings={adminData.site_settings || fallbackData.site_settings} onSave={onSaveSite} />;
+        }
+
+        if (active === "messages") {
+          return (
+            <MessagesPanel
+              prayers={adminData.prayer_requests || []}
+              messages={adminData.contact_messages || []}
+              onUpdatePrayer={onUpdatePrayer}
+              onUpdateMessage={onUpdateMessage}
+            />
+          );
+        }
+
+        if (active === "account") {
+          return <AccountPanel adminUser={adminUser} onChangeCredentials={onChangeCredentials} />;
+        }
+
+        const config = collectionConfig[active];
+        if (!config) return null;
+        return (
+          <AdminCollection
+            config={config}
+            rows={adminData[config.table] || []}
+            onSave={(payload) => onSaveCollection(config, payload)}
+            onDelete={(id) => onDeleteRow(config.table, id)}
+          />
+        );
+      }
+
+      function SiteSettingsForm({ settings, onSave }) {
+        const [draft, setDraft] = useState({ ...settings, hero_slides: normalizeMediaArray(settings.hero_slides) });
+        useEffect(() => setDraft({ ...settings, hero_slides: normalizeMediaArray(settings.hero_slides) }), [settings]);
+        const fields = [
+          ["logo_url", "Church Logo / Favicon", "upload-image", "full"],
+          ["church_name", "Church Name", "text"],
+          ["tagline", "Tagline", "text"],
+          ["welcome_title", "Welcome Title", "text"],
+          ["hero_image_url", "Primary Hero Image", "upload-image", "full"],
+          ["address", "Address", "text"],
+          ["phone", "Phone", "text"],
+          ["email", "Email", "email"],
+          ["live_stream_url", "Live Stream URL", "url"],
+          ["facebook_url", "Facebook URL", "url"],
+          ["youtube_url", "YouTube URL", "url"],
+          ["instagram_url", "Instagram URL", "url"],
+          ["map_embed_url", "Map Embed URL", "url"],
+          ["welcome_body", "Welcome Body", "textarea", "full"],
+        ];
+        return (
+          <form
+            className="admin-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSave({ ...draft, hero_slides: normalizeMediaArray(draft.hero_slides) });
+            }}
+          >
+            {fields.map(([name, label, type, width]) => (
+              <AdminField
+                key={name}
+                name={name}
+                label={label}
+                type={type}
+                width={width}
+                value={draft[name] || ""}
+                onChange={(value) => setDraft({ ...draft, [name]: value })}
+              />
+            ))}
+            <div className="field full">
+              <HeroSlidesEditor
+                slides={normalizeMediaArray(draft.hero_slides)}
+                onChange={(slides) => setDraft({ ...draft, hero_slides: slides })}
+              />
+            </div>
+            <div className="field full">
+              <button className="btn primary" type="submit">
+                {icon("save")}
+                Save Site
+              </button>
+            </div>
+          </form>
+        );
+      }
+
+      function AdminCollection({ config, rows, onSave, onDelete }) {
+        const [draft, setDraft] = useState(config.empty);
+        const sorted = sortedRows(rows);
+
+        useEffect(() => {
+          setDraft(config.empty);
+        }, [config.title]);
+
+        return (
+          <div className="admin-grid">
+            <div className="admin-panel">
+              <h3>{config.title}</h3>
+              <div className="admin-list">
+                {sorted.length ? (
+                  sorted.map((row) => (
+                    <article key={row.id} className="admin-row">
+                      <strong>{row.title || row.label || row.method_name || row.caption}</strong>
+                      <small>{row.event_date || row.sermon_date || row.starts_on || row.day_label || row.location || row.category}</small>
+                      <div className="row-actions">
+                        <button className="mini-action" type="button" onClick={() => setDraft({ ...config.empty, ...row })}>
+                          {icon("pencil")}
+                          Edit
+                        </button>
+                        <button className="mini-action danger" type="button" onClick={() => onDelete(row.id)}>
+                          {icon("trash-2")}
+                          Delete
+                        </button>
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <div className="empty-state">No records.</div>
+                )}
+              </div>
+            </div>
+            <div className="admin-panel">
+              <h3>{draft.id ? "Edit" : "New"} {config.singular}</h3>
+              <form
+                className="admin-form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  onSave(draft);
+                  setDraft(config.empty);
+                }}
+              >
+                {config.fields.map(([name, label, type, width]) => (
+                  <AdminField
+                    key={name}
+                    name={name}
+                    label={label}
+                    type={type}
+                    width={width}
+                    value={draft[name]}
+                    onChange={(value) => setDraft({ ...draft, [name]: value })}
+                  />
+                ))}
+                <div className="field full">
+                  <div className="form-actions">
+                    <button className="btn primary" type="submit">
+                      {icon("save")}
+                      Save
+                    </button>
+                    <button className="btn secondary" type="button" onClick={() => setDraft(config.empty)}>
+                      {icon("plus")}
+                      New
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        );
+      }
+
+      function HeroSlidesEditor({ slides, onChange }) {
+        const [newUrl, setNewUrl] = useState("");
+
+        async function uploadSlides(event) {
+          const files = Array.from(event.target.files || []);
+          if (!files.length) return;
+          try {
+            const dataUrls = await Promise.all(files.map((file) => readFileAsDataUrl(file, "image")));
+            onChange([...slides, ...dataUrls]);
+          } catch (error) {
+            window.alert(error.message);
+          } finally {
+            event.target.value = "";
+          }
+        }
+
+        function addUrl() {
+          const value = newUrl.trim();
+          if (!value) return;
+          onChange([...slides, value]);
+          setNewUrl("");
+        }
+
+        return (
+          <div className="slides-editor">
+            <label>Hero Slideshow Images</label>
+            <div className="slides-toolbar">
+              <input value={newUrl} onChange={(event) => setNewUrl(event.target.value)} />
+              <button className="mini-action" type="button" onClick={addUrl}>
+                {icon("plus")}
+                Add URL
+              </button>
+              <label className="upload-button">
+                {icon("upload")}
+                Upload Images
+                <input type="file" accept="image/*" multiple onChange={uploadSlides} />
+              </label>
+            </div>
+            {slides.length ? (
+              <div className="slide-list">
+                {slides.map((slide, index) => (
+                  <div className="slide-item" key={`${slide}-${index}`}>
+                    <img src={slide} alt="" />
+                    <button
+                      className="mini-action danger"
+                      type="button"
+                      aria-label={`Remove hero slide ${index + 1}`}
+                      onClick={() => onChange(slides.filter((_, slideIndex) => slideIndex !== index))}
+                    >
+                      {icon("x")}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">No slideshow images.</div>
+            )}
+          </div>
+        );
+      }
+
+      function MediaUploadField({ name, label, kind, width, value, onChange }) {
+        const accept = kind === "video" ? "video/*" : kind === "audio" ? "audio/*" : "image/*";
+        const visibleValue = isDataUrl(value) ? "" : value || "";
+
+        async function uploadFile(event) {
+          const file = event.target.files?.[0];
+          if (!file) return;
+          try {
+            const dataUrl = await readFileAsDataUrl(file, kind);
+            onChange(dataUrl);
+          } catch (error) {
+            window.alert(error.message);
+          } finally {
+            event.target.value = "";
+          }
+        }
+
+        return (
+          <div className={cx("field", width === "full" && "full", "upload-field")}>
+            <label htmlFor={`admin-${name}`}>{label}</label>
+            <div className="upload-control">
+              <input
+                id={`admin-${name}`}
+                type="text"
+                value={visibleValue}
+                placeholder={isDataUrl(value) ? "Uploaded file selected" : ""}
+                onChange={(event) => onChange(event.target.value)}
+              />
+              <label className="upload-button">
+                {icon("upload")}
+                Upload
+                <input type="file" accept={accept} onChange={uploadFile} />
+              </label>
+              {value && (
+                <button className="mini-action danger" type="button" onClick={() => onChange("")}>
+                  {icon("x")}
+                  Clear
+                </button>
+              )}
+            </div>
+            {value && (
+              <div className="media-preview">
+                {kind === "image" && <img src={value} alt="" />}
+                {kind === "video" && isVideoSource(value) && <video src={value} controls preload="metadata"></video>}
+                {kind === "audio" && isAudioSource(value) && <audio src={value} controls preload="metadata"></audio>}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function AdminField({ name, label, type, width, value, onChange }) {
+        if (type === "upload-image" || type === "upload-video" || type === "upload-audio") {
+          return (
+            <MediaUploadField
+              name={name}
+              label={label}
+              kind={type.replace("upload-", "")}
+              width={width}
+              value={value}
+              onChange={onChange}
+            />
+          );
+        }
+
+        if (type === "checkbox") {
+          return (
+            <label className={cx("field", width === "full" && "full", "checkbox-row")}>
+              <input type="checkbox" checked={Boolean(value)} onChange={(event) => onChange(event.target.checked)} />
+              <span>{label}</span>
+            </label>
+          );
+        }
+
+        if (type === "textarea") {
+          return (
+            <div className={cx("field", width === "full" && "full")}>
+              <label htmlFor={`admin-${name}`}>{label}</label>
+              <textarea id={`admin-${name}`} value={value || ""} onChange={(event) => onChange(event.target.value)}></textarea>
+            </div>
+          );
+        }
+
+        return (
+          <div className={cx("field", width === "full" && "full")}>
+            <label htmlFor={`admin-${name}`}>{label}</label>
+            <input
+              id={`admin-${name}`}
+              type={type}
+              value={type === "number" ? value ?? 0 : value || ""}
+              onChange={(event) => onChange(type === "number" ? Number(event.target.value) : event.target.value)}
+            />
+          </div>
+        );
+      }
+
+      function MessagesPanel({ prayers, messages, onUpdatePrayer, onUpdateMessage }) {
+        return (
+          <div className="admin-grid">
+            <div className="admin-panel">
+              <h3>Prayer Requests</h3>
+              <div className="message-list">
+                {prayers.length ? (
+                  prayers.map((item) => (
+                    <article className="message-card" key={item.id}>
+                      <strong>{item.name}</strong>
+                      <small>
+                        {item.email} {item.phone ? `- ${item.phone}` : ""}
+                      </small>
+                      <p>{item.request_text}</p>
+                      <div className="row-actions">
+                        <button className="mini-action" type="button" onClick={() => onUpdatePrayer(item.id, "praying", item.is_public)}>
+                          {icon("hand-heart")}
+                          Praying
+                        </button>
+                        <button className="mini-action" type="button" onClick={() => onUpdatePrayer(item.id, "answered", item.is_public)}>
+                          {icon("check-circle")}
+                          Answered
+                        </button>
+                        <button className="mini-action" type="button" onClick={() => onUpdatePrayer(item.id, item.status, !item.is_public)}>
+                          {icon(item.is_public ? "eye-off" : "eye")}
+                          {item.is_public ? "Private" : "Public"}
+                        </button>
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <div className="empty-state">No prayer requests.</div>
+                )}
+              </div>
+            </div>
+            <div className="admin-panel">
+              <h3>Contact Messages</h3>
+              <div className="message-list">
+                {messages.length ? (
+                  messages.map((item) => (
+                    <article className="message-card" key={item.id}>
+                      <strong>{item.subject}</strong>
+                      <small>
+                        {item.name} - {item.email} {item.phone ? `- ${item.phone}` : ""}
+                      </small>
+                      <p>{item.message}</p>
+                      <div className="row-actions">
+                        <button className="mini-action" type="button" onClick={() => onUpdateMessage(item.id, "read")}>
+                          {icon("mail-open")}
+                          Read
+                        </button>
+                        <button className="mini-action" type="button" onClick={() => onUpdateMessage(item.id, "closed")}>
+                          {icon("archive")}
+                          Closed
+                        </button>
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <div className="empty-state">No messages.</div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function AccountPanel({ adminUser, onChangeCredentials }) {
+        const [draft, setDraft] = useState({ username: adminUser?.username || "", display_name: adminUser?.display_name || "", password: "" });
+        useEffect(() => {
+          setDraft({ username: adminUser?.username || "", display_name: adminUser?.display_name || "", password: "" });
+        }, [adminUser]);
+        return (
+          <div className="admin-panel">
+            <h3>Administrator</h3>
+            <form
+              className="admin-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                onChangeCredentials(draft);
+                setDraft((current) => ({ ...current, password: "" }));
+              }}
+            >
+              <AdminField name="account-username" label="Username" type="text" value={draft.username} onChange={(value) => setDraft({ ...draft, username: value })} />
+              <AdminField
+                name="account-display"
+                label="Display Name"
+                type="text"
+                value={draft.display_name}
+                onChange={(value) => setDraft({ ...draft, display_name: value })}
+              />
+              <AdminField
+                name="account-password"
+                label="New Password"
+                type="password"
+                value={draft.password}
+                onChange={(value) => setDraft({ ...draft, password: value })}
+              />
+              <div className="field full">
+                <button className="btn primary" type="submit">
+                  {icon("key-round")}
+                  Update Account
+                </button>
+              </div>
+            </form>
+          </div>
+        );
+      }
+
+      function Footer({ settings }) {
+        return (
+          <footer className="site-footer">
+            <div className="container">
+              <div className="footer-grid">
+                <div>
+                  <h3>{settings.church_name}</h3>
+                  <p>{settings.tagline}</p>
+                </div>
+                <div>
+                  <h4>Explore</h4>
+                  <div className="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#ministries">Ministries</a>
+                    <a href="#events">Events</a>
+                  </div>
+                </div>
+                <div>
+                  <h4>Connect</h4>
+                  <div className="footer-links">
+                    <a href={`mailto:${settings.email}`}>{settings.email}</a>
+                    <a href={`tel:${settings.phone}`}>{settings.phone}</a>
+                    <a href="#contact">Prayer</a>
+                  </div>
+                </div>
+                <div>
+                  <h4>Social</h4>
+                  <div className="footer-links">
+                    {settings.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noreferrer">Facebook</a>}
+                    {settings.youtube_url && <a href={settings.youtube_url} target="_blank" rel="noreferrer">YouTube</a>}
+                    {settings.instagram_url && <a href={settings.instagram_url} target="_blank" rel="noreferrer">Instagram</a>}
+                  </div>
+                </div>
+              </div>
+              <div className="footer-bottom">
+                <span>&copy; {new Date().getFullYear()} {settings.church_name}</span>
+                <a href="#admin">Admin</a>
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
