@@ -707,6 +707,65 @@
         gap: 18px;
       }
 
+      .event-card.has-flyer {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .event-flyer {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+        background-color: rgba(16, 35, 49, 0.05);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+      }
+
+      .smart-space-fit {
+        background-image: none !important;
+        isolation: isolate;
+      }
+
+      .smart-space-fit::before,
+      .smart-space-fit::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--flyer-image);
+        background-repeat: no-repeat;
+        background-position: var(--flyer-position, center center);
+        pointer-events: none;
+      }
+
+      .smart-space-fit::before {
+        inset: -28px;
+        z-index: 0;
+        background-size: cover;
+        filter: blur(20px) saturate(1.16);
+        opacity: 0.72;
+        transform: scale(1.08);
+      }
+
+      .smart-space-fit::after {
+        z-index: 1;
+        background-size: contain;
+      }
+
+      .event-card-body {
+        display: contents;
+      }
+
+      .event-card.has-flyer .event-card-body {
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        gap: 18px;
+        padding: 22px;
+      }
+
       .event-date {
         align-self: start;
         display: grid;
@@ -1166,6 +1225,33 @@
         object-fit: cover;
       }
 
+      .flyer-editor-panel {
+        display: grid;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid rgba(16, 35, 49, 0.1);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .flyer-editor-controls {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .flyer-editor-preview {
+        position: relative;
+        min-height: 300px;
+        overflow: hidden;
+        border: 1px solid rgba(16, 35, 49, 0.12);
+        border-radius: var(--radius);
+        background-color: rgba(16, 35, 49, 0.04);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+      }
+
       .slides-editor {
         display: grid;
         gap: 12px;
@@ -1489,6 +1575,7 @@
         .slides-toolbar,
         .slide-list,
         .hero-display-controls,
+        .flyer-editor-controls,
         .dashboard-stats,
         .footer-grid {
           grid-template-columns: 1fr;
@@ -1518,6 +1605,10 @@
         }
 
         .event-card {
+          grid-template-columns: 1fr;
+        }
+
+        .event-card.has-flyer .event-card-body {
           grid-template-columns: 1fr;
         }
 
@@ -1719,6 +1810,10 @@
             event_time: "7:00 PM",
             location: "Main Sanctuary",
             description: "A citywide gathering of worship, prayer, and ministry.",
+            flyer_image_url: "",
+            flyer_fit: "space",
+            flyer_zoom: 100,
+            flyer_position: "center center",
             registration_url: "",
             sort_order: 1,
           },
@@ -1729,6 +1824,10 @@
             event_time: "9:00 AM",
             location: "Main Sanctuary",
             description: "Baby dedications, family prayer, fellowship, and shared meals.",
+            flyer_image_url: "",
+            flyer_fit: "space",
+            flyer_zoom: 100,
+            flyer_position: "center center",
             registration_url: "",
             sort_order: 2,
           },
@@ -1739,6 +1838,10 @@
             event_time: "10:00 AM",
             location: "Chapel Hall",
             description: "Training and alignment for ministry leaders and volunteers.",
+            flyer_image_url: "",
+            flyer_fit: "space",
+            flyer_zoom: 100,
+            flyer_position: "center center",
             registration_url: "",
             sort_order: 3,
           },
@@ -1938,6 +2041,10 @@
             event_time: "",
             location: "",
             description: "",
+            flyer_image_url: "",
+            flyer_fit: "space",
+            flyer_zoom: 100,
+            flyer_position: "center center",
             registration_url: "",
             sort_order: 0,
             is_published: true,
@@ -1947,6 +2054,7 @@
             ["event_date", "Date", "date"],
             ["event_time", "Time", "text"],
             ["location", "Location", "text"],
+            ["flyer_image_url", "Event Flyer", "event-flyer", "full"],
             ["registration_url", "Registration URL", "url"],
             ["sort_order", "Order", "number"],
             ["is_published", "Published", "checkbox"],
@@ -2106,6 +2214,33 @@
 
       function getHeroPosition(settings) {
         return settings.hero_position || fallbackData.site_settings.hero_position || "center center";
+      }
+
+      function normalizeEventFlyerFit(value) {
+        if (!value || value === "contain") return "space";
+        return value;
+      }
+
+      function getEventFlyerStyle(event) {
+        const fit = normalizeEventFlyerFit(event.flyer_fit);
+        const zoom = clampNumber(event.flyer_zoom, 40, 180, 100);
+        const position = event.flyer_position || "center center";
+        const image = `url("${event.flyer_image_url}")`;
+        if (fit === "space") {
+          return {
+            "--flyer-image": image,
+            "--flyer-position": position,
+          };
+        }
+        return {
+          backgroundImage: image,
+          backgroundSize: fit === "cover" ? "cover" : fit === "custom" ? `${zoom}% auto` : "contain",
+          backgroundPosition: position,
+        };
+      }
+
+      function getEventFlyerClassName(baseClass, event) {
+        return cx(baseClass, normalizeEventFlyerFit(event.flyer_fit) === "space" && "smart-space-fit");
       }
 
       function getAboutImages(settings) {
@@ -2852,26 +2987,31 @@
                 {rows.map((event) => {
                   const parts = dateParts(event.event_date);
                   return (
-                    <article key={event.id} className="event-card">
-                      <div className="event-date">
+                    <article key={event.id} className={cx("event-card", event.flyer_image_url && "has-flyer")}>
+                      {event.flyer_image_url && (
+                        <div className={getEventFlyerClassName("event-flyer", event)} style={getEventFlyerStyle(event)} role="img" aria-label={event.title}></div>
+                      )}
+                      <div className="event-card-body">
+                        <div className="event-date">
+                          <div>
+                            <span>{parts.month}</span>
+                            <strong>{parts.day}</strong>
+                          </div>
+                        </div>
                         <div>
-                          <span>{parts.month}</span>
-                          <strong>{parts.day}</strong>
+                          <h3>{event.title}</h3>
+                          <p>{event.description}</p>
+                          <div className="sermon-meta" style={{ marginTop: 12 }}>
+                            <span>{event.event_time}</span>
+                            <span>{event.location}</span>
+                          </div>
+                          {event.registration_url && (
+                            <a className="btn secondary" style={{ marginTop: 14 }} href={event.registration_url} target="_blank" rel="noreferrer">
+                              {icon("external-link")}
+                              Register
+                            </a>
+                          )}
                         </div>
-                      </div>
-                      <div>
-                        <h3>{event.title}</h3>
-                        <p>{event.description}</p>
-                        <div className="sermon-meta" style={{ marginTop: 12 }}>
-                          <span>{event.event_time}</span>
-                          <span>{event.location}</span>
-                        </div>
-                        {event.registration_url && (
-                          <a className="btn secondary" style={{ marginTop: 14 }} href={event.registration_url} target="_blank" rel="noreferrer">
-                            {icon("external-link")}
-                            Register
-                          </a>
-                        )}
                       </div>
                     </article>
                   );
@@ -3731,6 +3871,8 @@
                     type={type}
                     width={width}
                     value={draft[name]}
+                    draft={draft}
+                    setDraft={setDraft}
                     onChange={(value) => setDraft({ ...draft, [name]: value })}
                   />
                 ))}
@@ -3863,6 +4005,111 @@
         );
       }
 
+      function EventFlyerField({ draft, setDraft }) {
+        const value = draft.flyer_image_url || "";
+        const zoom = clampNumber(draft.flyer_zoom, 40, 180, 100);
+        const flyerDraft = {
+          ...draft,
+          flyer_fit: normalizeEventFlyerFit(draft.flyer_fit),
+          flyer_zoom: zoom,
+          flyer_position: draft.flyer_position || "center center",
+        };
+
+        async function uploadFile(event) {
+          const file = event.target.files?.[0];
+          if (!file) return;
+          try {
+            const url = await uploadMediaFile(file, "image");
+            setDraft({ ...draft, flyer_image_url: url, flyer_fit: normalizeEventFlyerFit(draft.flyer_fit) });
+          } catch (error) {
+            window.alert(error.message);
+          } finally {
+            event.target.value = "";
+          }
+        }
+
+        return (
+          <div className="field full upload-field">
+            <label htmlFor="admin-flyer_image_url">Event Flyer</label>
+            <div className="upload-control">
+              <input
+                id="admin-flyer_image_url"
+                type="text"
+                value={value}
+                placeholder="Paste a URL or upload a file"
+                onChange={(event) => setDraft({ ...draft, flyer_image_url: event.target.value })}
+              />
+              <label className="upload-button">
+                {icon("upload")}
+                Upload
+                <input type="file" accept="image/*" onChange={uploadFile} />
+              </label>
+              {value && (
+                <button className="mini-action danger" type="button" onClick={() => setDraft({ ...draft, flyer_image_url: "" })}>
+                  {icon("x")}
+                  Clear
+                </button>
+              )}
+            </div>
+            {value && (
+              <div className="flyer-editor-panel">
+                <div className="flyer-editor-controls">
+                  <div className="field">
+                    <label htmlFor="event-flyer-fit">Flyer Fit</label>
+                    <select
+                      id="event-flyer-fit"
+                      value={flyerDraft.flyer_fit}
+                      onChange={(event) => setDraft({ ...draft, flyer_fit: event.target.value })}
+                    >
+                      <option value="space">AI space fit</option>
+                      <option value="clean">Clean full image</option>
+                      <option value="custom">Manual crop</option>
+                      <option value="cover">Fill card</option>
+                    </select>
+                  </div>
+                  <div className="field range-row">
+                    <label htmlFor="event-flyer-zoom">Flyer Zoom: {zoom}%</label>
+                    <input
+                      id="event-flyer-zoom"
+                      type="range"
+                      min="40"
+                      max="180"
+                      step="5"
+                      value={zoom}
+                      onChange={(event) => setDraft({ ...draft, flyer_zoom: Number(event.target.value), flyer_fit: "custom" })}
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="event-flyer-position">Crop Focus</label>
+                    <select
+                      id="event-flyer-position"
+                      value={flyerDraft.flyer_position}
+                      onChange={(event) => setDraft({ ...draft, flyer_position: event.target.value })}
+                    >
+                      <option value="center center">Center</option>
+                      <option value="center top">Top</option>
+                      <option value="center bottom">Bottom</option>
+                      <option value="left center">Left</option>
+                      <option value="right center">Right</option>
+                      <option value="left top">Top Left</option>
+                      <option value="right top">Top Right</option>
+                      <option value="left bottom">Bottom Left</option>
+                      <option value="right bottom">Bottom Right</option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  className={getEventFlyerClassName("flyer-editor-preview", flyerDraft)}
+                  style={getEventFlyerStyle(flyerDraft)}
+                  role="img"
+                  aria-label={draft.title || "Event flyer"}
+                ></div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
       function MediaUploadField({ name, label, kind, width, value, onChange }) {
         const accept = kind === "video" ? "video/*" : kind === "audio" ? "audio/*" : "image/*";
         const visibleValue = value || "";
@@ -3914,7 +4161,11 @@
         );
       }
 
-      function AdminField({ name, label, type, width, value, onChange }) {
+      function AdminField({ name, label, type, width, value, onChange, draft, setDraft }) {
+        if (type === "event-flyer") {
+          return <EventFlyerField draft={draft} setDraft={setDraft} />;
+        }
+
         if (type === "upload-image" || type === "upload-video" || type === "upload-audio") {
           return (
             <MediaUploadField
