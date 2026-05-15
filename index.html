@@ -514,6 +514,33 @@
         border: 8px solid var(--paper);
       }
 
+      .image-stack.style-framed img:first-child {
+        width: 100%;
+        height: 500px;
+      }
+
+      .image-stack.style-framed img:nth-child(2) {
+        width: 54%;
+        right: 24px;
+        bottom: -26px;
+        border-color: #fff;
+        box-shadow: 0 18px 48px rgba(16, 35, 49, 0.16);
+      }
+
+      .image-stack.style-wide {
+        min-height: 430px;
+      }
+
+      .image-stack.style-wide img:first-child {
+        width: 100%;
+        height: 360px;
+      }
+
+      .image-stack.style-wide img:nth-child(2) {
+        width: 42%;
+        height: 210px;
+      }
+
       .value-list {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -789,6 +816,61 @@
         color: #fff;
         background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.74));
         font-weight: 900;
+      }
+
+      .gallery-group-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 34px;
+      }
+
+      .gallery-group-card {
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #fff;
+        border: 1px solid rgba(16, 35, 49, 0.09);
+        box-shadow: 0 16px 42px rgba(16, 35, 49, 0.08);
+      }
+
+      .gallery-group-media {
+        position: relative;
+        height: 280px;
+        background: #102331;
+      }
+
+      .gallery-group-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .gallery-group-body {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .gallery-group-body h3 {
+        margin: 0;
+      }
+
+      .gallery-dots {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .gallery-dots button {
+        width: 30px;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(16, 35, 49, 0.16);
+        cursor: pointer;
+      }
+
+      .gallery-dots button.active {
+        background: var(--teal);
       }
 
       .prayer-contact {
@@ -1241,6 +1323,68 @@
         border-radius: var(--radius);
       }
 
+      .payment-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        background: rgba(8, 20, 28, 0.72);
+      }
+
+      .payment-modal {
+        width: min(560px, 100%);
+        max-height: min(720px, calc(100vh - 36px));
+        overflow: auto;
+        padding: 24px;
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--ink);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      }
+
+      .payment-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .payment-header h3 {
+        margin: 0;
+      }
+
+      .payment-network-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .payment-network-grid button {
+        min-height: 74px;
+        padding: 12px;
+        border-radius: var(--radius);
+        background: rgba(16, 35, 49, 0.06);
+        border: 1px solid rgba(16, 35, 49, 0.12);
+        color: var(--ink);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .payment-network-grid button.active {
+        color: #fff;
+        background: linear-gradient(135deg, var(--teal), var(--coral));
+        border-color: transparent;
+      }
+
+      .payment-status {
+        min-height: 22px;
+        color: var(--teal-dark);
+        font-weight: 900;
+      }
+
       @media (max-width: 1040px) {
         .nav-links {
           position: fixed;
@@ -1337,6 +1481,8 @@
         .event-grid,
         .giving-grid,
         .gallery-grid,
+        .gallery-group-grid,
+        .payment-network-grid,
         .form-grid,
         .admin-form,
         .upload-control,
@@ -1389,6 +1535,7 @@
     <div id="root"></div>
 
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://js.paystack.co/v2/inline.js"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -1434,6 +1581,11 @@
           hero_fit: "contain",
           hero_zoom: 100,
           hero_position: "center center",
+          about_image_primary_url:
+            "https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=1300&q=85",
+          about_image_secondary_url:
+            "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=900&q=85",
+          about_image_style: "stacked",
           address: "123 Grace Avenue, Community Center",
           phone: "+1 (555) 013-4477",
           email: "hello@landofdunamise.org",
@@ -1598,6 +1750,9 @@
             details: "Give securely to support worship, discipleship, care, and outreach.",
             button_label: "Give Online",
             button_url: "#giving",
+            payment_enabled: true,
+            paystack_public_key: "",
+            currency: "GHS",
             sort_order: 1,
           },
           {
@@ -1606,6 +1761,9 @@
             details: "Partner with practical care, evangelism, and community transformation.",
             button_label: "Partner",
             button_url: "#contact",
+            payment_enabled: false,
+            paystack_public_key: "",
+            currency: "GHS",
             sort_order: 2,
           },
           {
@@ -1614,6 +1772,9 @@
             details: "Help create excellent spaces for worship, children, and training.",
             button_label: "Support",
             button_url: "#contact",
+            payment_enabled: false,
+            paystack_public_key: "",
+            currency: "GHS",
             sort_order: 3,
           },
         ],
@@ -1677,6 +1838,7 @@
       const adminTabs = [
         ["overview", "Overview"],
         ["site", "Site"],
+        ["about", "About"],
         ["services", "Services"],
         ["ministries", "Ministries"],
         ["sermons", "Sermons"],
@@ -1731,7 +1893,7 @@
             ["title", "Title", "text"],
             ["leader", "Leader", "text"],
             ["meeting_time", "Meeting Time", "text"],
-            ["image_url", "Image URL", "url"],
+            ["image_url", "Image", "upload-image", "full"],
             ["sort_order", "Order", "number"],
             ["is_published", "Published", "checkbox"],
             ["description", "Description", "textarea", "full"],
@@ -1825,6 +1987,9 @@
             details: "",
             button_label: "",
             button_url: "",
+            payment_enabled: false,
+            paystack_public_key: "",
+            currency: "GHS",
             sort_order: 0,
             is_published: true,
           },
@@ -1832,6 +1997,9 @@
             ["method_name", "Name", "text"],
             ["button_label", "Button", "text"],
             ["button_url", "Button URL", "url"],
+            ["payment_enabled", "Mobile Money Popup", "checkbox"],
+            ["paystack_public_key", "Paystack Public Key", "text", "full"],
+            ["currency", "Currency", "text"],
             ["sort_order", "Order", "number"],
             ["is_published", "Published", "checkbox"],
             ["details", "Details", "textarea", "full"],
@@ -1938,6 +2106,49 @@
 
       function getHeroPosition(settings) {
         return settings.hero_position || fallbackData.site_settings.hero_position || "center center";
+      }
+
+      function getAboutImages(settings) {
+        return [
+          settings.about_image_primary_url || fallbackData.site_settings.about_image_primary_url,
+          settings.about_image_secondary_url || fallbackData.site_settings.about_image_secondary_url,
+        ].filter(Boolean);
+      }
+
+      function normalizeMapEmbedUrl(settings) {
+        const raw = String(settings.map_embed_url || "").trim();
+        const address = String(settings.address || fallbackData.site_settings.address || "").trim();
+        if (!raw && !address) return "";
+
+        const iframeMatch = raw.match(/src=["']([^"']+)["']/i);
+        const value = iframeMatch ? iframeMatch[1] : raw;
+        if (value.includes("/maps/embed") || value.includes("output=embed")) return value;
+        if (value.includes("google.") && value.includes("/maps")) {
+          return `https://www.google.com/maps?q=${encodeURIComponent(address || value)}&output=embed`;
+        }
+        return `https://www.google.com/maps?q=${encodeURIComponent(value || address)}&output=embed`;
+      }
+
+      function groupGalleryByCaption(rows) {
+        const groups = new Map();
+        sortedRows(rows).forEach((item) => {
+          const key = (item.caption || "Church Gallery").trim();
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(item);
+        });
+        return Array.from(groups, ([caption, items]) => ({ caption, items }));
+      }
+
+      function isTithesMethod(method) {
+        return String(method.method_name || "").toLowerCase().includes("tithe");
+      }
+
+      function createPaymentReference() {
+        const base =
+          window.crypto && window.crypto.randomUUID
+            ? window.crypto.randomUUID()
+            : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        return `LOD-${base.replace(/[^a-zA-Z0-9.-]/g, "").slice(0, 32)}`;
       }
 
       function isDataUrl(value) {
@@ -2476,18 +2687,15 @@
       }
 
       function About({ settings }) {
+        const aboutImages = getAboutImages(settings);
+        const aboutStyle = settings.about_image_style || fallbackData.site_settings.about_image_style || "stacked";
         return (
           <section id="about" className="section">
             <div className="container split-grid">
-              <div className="image-stack">
-                <img
-                  src="https://images.unsplash.com/photo-1478147427282-58a87a120781?auto=format&fit=crop&w=1300&q=85"
-                  alt="Church worship gathering"
-                />
-                <img
-                  src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=900&q=85"
-                  alt="Church community fellowship"
-                />
+              <div className={cx("image-stack", `style-${aboutStyle}`)}>
+                {aboutImages.map((image, index) => (
+                  <img key={`${image}-${index}`} src={image} alt={index === 0 ? "Church worship gathering" : "Church community fellowship"} />
+                ))}
               </div>
               <div>
                 <span className="section-kicker">Our Heart</span>
@@ -2675,7 +2883,8 @@
       }
 
       function Gallery({ gallery }) {
-        const rows = sortedRows(gallery).slice(0, 5);
+        const rows = sortedRows(gallery);
+        const groups = groupGalleryByCaption(rows);
         const [activeGallery, setActiveGallery] = useState(0);
         const featured = rows[activeGallery % Math.max(rows.length, 1)];
 
@@ -2722,12 +2931,9 @@
                   </div>
                 </div>
               )}
-              <div className="gallery-grid">
-                {rows.map((item) => (
-                  <figure className="gallery-item" key={item.id}>
-                    <img src={item.image_url} alt={item.alt_text || item.caption || "Church gallery"} />
-                    <figcaption className="gallery-caption">{item.caption}</figcaption>
-                  </figure>
+              <div className="gallery-group-grid">
+                {groups.map((group) => (
+                  <GalleryGroup key={group.caption} group={group} />
                 ))}
               </div>
             </div>
@@ -2735,8 +2941,62 @@
         );
       }
 
+      function GalleryGroup({ group }) {
+        const [active, setActive] = useState(0);
+        const items = group.items;
+        const featured = items[active % items.length];
+
+        useEffect(() => {
+          setActive(0);
+        }, [group.caption]);
+
+        useEffect(() => {
+          if (items.length < 2) return undefined;
+          const timer = window.setInterval(() => {
+            setActive((index) => (index + 1) % items.length);
+          }, 4200);
+          return () => window.clearInterval(timer);
+        }, [items.length]);
+
+        return (
+          <article className="gallery-group-card">
+            <div className="gallery-group-media">
+              <img src={featured.image_url} alt={featured.alt_text || group.caption} />
+              {items.length > 1 && (
+                <div className="gallery-controls" style={{ position: "absolute", right: 12, bottom: 12 }}>
+                  <button type="button" aria-label="Previous image" onClick={() => setActive((index) => (index - 1 + items.length) % items.length)}>
+                    {icon("chevron-left")}
+                  </button>
+                  <button type="button" aria-label="Next image" onClick={() => setActive((index) => (index + 1) % items.length)}>
+                    {icon("chevron-right")}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="gallery-group-body">
+              <h3>{group.caption}</h3>
+              <span className="status-pill">{items.length} image{items.length === 1 ? "" : "s"}</span>
+              {items.length > 1 && (
+                <div className="gallery-dots">
+                  {items.map((item, index) => (
+                    <button
+                      key={item.id || `${group.caption}-${index}`}
+                      type="button"
+                      className={active === index ? "active" : ""}
+                      aria-label={`${group.caption} image ${index + 1}`}
+                      onClick={() => setActive(index)}
+                    ></button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      }
+
       function Giving({ giving }) {
         const rows = sortedRows(giving);
+        const [paymentMethod, setPaymentMethod] = useState(null);
         return (
           <section id="giving" className="section">
             <div className="container">
@@ -2751,17 +3011,195 @@
                       <h3>{method.method_name}</h3>
                       <p>{method.details}</p>
                     </div>
-                    {method.button_url && (
-                      <a className="btn primary" href={method.button_url} target={method.button_url.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
-                        {icon("arrow-up-right")}
+                    {isTithesMethod(method) && method.payment_enabled ? (
+                      <button className="btn primary" type="button" onClick={() => setPaymentMethod(method)}>
+                        {icon("smartphone")}
                         {method.button_label || "Give"}
-                      </a>
+                      </button>
+                    ) : (
+                      method.button_url && (
+                        <a className="btn primary" href={method.button_url} target={method.button_url.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                          {icon("arrow-up-right")}
+                          {method.button_label || "Give"}
+                        </a>
+                      )
                     )}
                   </article>
                 ))}
               </div>
             </div>
+            {paymentMethod && <MobileMoneyModal method={paymentMethod} onClose={() => setPaymentMethod(null)} />}
           </section>
+        );
+      }
+
+      function MobileMoneyModal({ method, onClose }) {
+        const [payment, setPayment] = useState({
+          amount: "",
+          name: "",
+          email: "",
+          phone: "",
+          network: "MTN Mobile Money",
+        });
+        const [status, setStatus] = useState("");
+        const networks = ["MTN Mobile Money", "Telecel Cash", "AirtelTigo Money"];
+        const currency = method.currency || "GHS";
+
+        async function recordPayment(transaction, reference) {
+          if (!supabaseClient) return;
+          await supabaseClient.from("giving_payments").insert({
+            method_name: method.method_name,
+            amount: Number(payment.amount),
+            currency,
+            payer_name: payment.name,
+            payer_email: payment.email,
+            payer_phone: payment.phone,
+            network: payment.network,
+            reference: transaction?.reference || transaction?.trxref || reference,
+            status: transaction?.status || "success",
+          });
+        }
+
+        function startPayment(event) {
+          event.preventDefault();
+          setStatus("");
+          const key = (method.paystack_public_key || "").trim();
+          if (!key) {
+            setStatus("Payment gateway not active.");
+            return;
+          }
+          const amount = Number(payment.amount);
+          if (!amount || amount <= 0) {
+            setStatus("Enter a valid amount.");
+            return;
+          }
+          if (!payment.email || !payment.phone) {
+            setStatus("Email and phone are required.");
+            return;
+          }
+
+          const reference = createPaymentReference();
+          const options = {
+            key,
+            email: payment.email,
+            amount: Math.round(amount * 100),
+            currency,
+            phone: payment.phone,
+            channels: ["mobile_money"],
+            reference,
+            metadata: {
+              custom_fields: [
+                { display_name: "Giving", variable_name: "giving_method", value: method.method_name },
+                { display_name: "Network", variable_name: "network", value: payment.network },
+                { display_name: "Name", variable_name: "name", value: payment.name },
+              ],
+            },
+            onSuccess: async (transaction) => {
+              await recordPayment(transaction, reference);
+              setStatus("Payment received.");
+            },
+            onCancel: () => setStatus("Payment cancelled."),
+            onError: (error) => setStatus(error?.message || "Payment could not start."),
+          };
+
+          if (window.PaystackPop?.setup) {
+            const handler = window.PaystackPop.setup({
+              ...options,
+              callback: options.onSuccess,
+              onClose: options.onCancel,
+            });
+            handler.openIframe();
+            return;
+          }
+
+          const PaystackClass = window.PaystackPop || window.Paystack;
+          if (!PaystackClass) {
+            setStatus("Payment gateway unavailable.");
+            return;
+          }
+          const popup = new PaystackClass();
+          popup.newTransaction(options);
+        }
+
+        return (
+          <div className="payment-overlay" role="dialog" aria-modal="true">
+            <div className="payment-modal">
+              <div className="payment-header">
+                <div>
+                  <span className="section-kicker">Mobile Money</span>
+                  <h3>{method.method_name}</h3>
+                </div>
+                <button className="icon-button" type="button" aria-label="Close payment" onClick={onClose}>
+                  {icon("x")}
+                </button>
+              </div>
+              <form className="form-grid" onSubmit={startPayment}>
+                <div className="field full">
+                  <label>Service</label>
+                  <div className="payment-network-grid">
+                    {networks.map((network) => (
+                      <button
+                        key={network}
+                        type="button"
+                        className={payment.network === network ? "active" : ""}
+                        onClick={() => setPayment({ ...payment, network })}
+                      >
+                        {network}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="field">
+                  <label htmlFor="payment-amount">Amount ({currency})</label>
+                  <input
+                    id="payment-amount"
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    required
+                    value={payment.amount}
+                    onChange={(event) => setPayment({ ...payment, amount: event.target.value })}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="payment-phone">Mobile Money Number</label>
+                  <input
+                    id="payment-phone"
+                    required
+                    value={payment.phone}
+                    onChange={(event) => setPayment({ ...payment, phone: event.target.value })}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="payment-name">Name</label>
+                  <input
+                    id="payment-name"
+                    value={payment.name}
+                    onChange={(event) => setPayment({ ...payment, name: event.target.value })}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="payment-email">Email</label>
+                  <input
+                    id="payment-email"
+                    type="email"
+                    required
+                    value={payment.email}
+                    onChange={(event) => setPayment({ ...payment, email: event.target.value })}
+                  />
+                </div>
+                <div className="field full">
+                  <div className="form-actions">
+                    <button className="btn primary" type="submit">
+                      {icon("credit-card")}
+                      Pay Now
+                    </button>
+                    <span className="payment-status">{status}</span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         );
       }
 
@@ -2769,6 +3207,7 @@
         const [contact, setContact] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
         const [prayer, setPrayer] = useState({ name: "", email: "", phone: "", request_text: "" });
         const [status, setStatus] = useState("");
+        const mapUrl = normalizeMapEmbedUrl(settings);
 
         async function submitContact(event) {
           event.preventDefault();
@@ -2832,8 +3271,8 @@
                       </a>
                     )}
                   </div>
-                  {settings.map_embed_url && (
-                    <iframe className="map-frame" title="Church location" loading="lazy" src={settings.map_embed_url}></iframe>
+                  {mapUrl && (
+                    <iframe className="map-frame" title="Church location" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapUrl}></iframe>
                   )}
                 </div>
 
@@ -3073,6 +3512,10 @@
           return <SiteSettingsForm settings={adminData.site_settings || fallbackData.site_settings} onSave={onSaveSite} />;
         }
 
+        if (active === "about") {
+          return <AboutSettingsForm settings={adminData.site_settings || fallbackData.site_settings} onSave={onSaveSite} />;
+        }
+
         if (active === "messages") {
           return (
             <MessagesPanel
@@ -3158,6 +3601,77 @@
               <button className="btn primary" type="submit">
                 {icon("save")}
                 Save Site
+              </button>
+            </div>
+          </form>
+        );
+      }
+
+      function AboutSettingsForm({ settings, onSave }) {
+        const [draft, setDraft] = useState({
+          ...settings,
+          about_image_style: settings.about_image_style || "stacked",
+        });
+        useEffect(() => {
+          setDraft({ ...settings, about_image_style: settings.about_image_style || "stacked" });
+        }, [settings]);
+
+        return (
+          <form
+            className="admin-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              onSave(draft);
+            }}
+          >
+            <AdminField
+              name="welcome_title"
+              label="About Title"
+              type="text"
+              width="full"
+              value={draft.welcome_title || ""}
+              onChange={(value) => setDraft({ ...draft, welcome_title: value })}
+            />
+            <AdminField
+              name="welcome_body"
+              label="About Text"
+              type="textarea"
+              width="full"
+              value={draft.welcome_body || ""}
+              onChange={(value) => setDraft({ ...draft, welcome_body: value })}
+            />
+            <AdminField
+              name="about_image_primary_url"
+              label="About Main Image"
+              type="upload-image"
+              width="full"
+              value={draft.about_image_primary_url || ""}
+              onChange={(value) => setDraft({ ...draft, about_image_primary_url: value })}
+            />
+            <AdminField
+              name="about_image_secondary_url"
+              label="About Accent Image"
+              type="upload-image"
+              width="full"
+              value={draft.about_image_secondary_url || ""}
+              onChange={(value) => setDraft({ ...draft, about_image_secondary_url: value })}
+            />
+            <div className="field full">
+              <label htmlFor="about-style">Image Style</label>
+              <select
+                id="about-style"
+                value={draft.about_image_style || "stacked"}
+                onChange={(event) => setDraft({ ...draft, about_image_style: event.target.value })}
+              >
+                <option value="stacked">Stacked</option>
+                <option value="framed">Framed</option>
+                <option value="wide">Wide</option>
+              </select>
+            </div>
+            <div className="field full">
+              <button className="btn primary" type="submit">
+                {icon("save")}
+                Save About
               </button>
             </div>
           </form>
