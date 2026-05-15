@@ -1390,6 +1390,8 @@
           })
         : null;
 
+      const MEDIA_BUCKET = "church-media";
+
       const fallbackData = {
         site_settings: {
           id: 1,
@@ -1889,9 +1891,9 @@
       }
 
       function getHeroSlides(settings) {
+        const primary = settings.hero_image_url || fallbackData.site_settings.hero_image_url;
         const slides = normalizeMediaArray(settings.hero_slides);
-        if (slides.length) return slides;
-        return [settings.hero_image_url || fallbackData.site_settings.hero_image_url].filter(Boolean);
+        return [primary, ...slides.filter((slide) => slide !== primary)].filter(Boolean);
       }
 
       function isDataUrl(value) {
@@ -1909,15 +1911,23 @@
       }
 
       function mediaLimitFor(kind) {
-        if (kind === "video") return 30;
-        if (kind === "audio") return 18;
-        return 5;
+        if (kind === "video") return 50;
+        if (kind === "audio") return 25;
+        return 12;
+      }
+
+      function validateMediaFile(file, kind = "image") {
+        const maxMb = mediaLimitFor(kind);
+        if (file.size > maxMb * 1024 * 1024) {
+          throw new Error(`File must be ${maxMb}MB or smaller.`);
+        }
       }
 
       function readFileAsDataUrl(file, kind = "image") {
-        const maxMb = mediaLimitFor(kind);
-        if (file.size > maxMb * 1024 * 1024) {
-          return Promise.reject(new Error(`File must be ${maxMb}MB or smaller.`));
+        try {
+          validateMediaFile(file, kind);
+        } catch (error) {
+          return Promise.reject(error);
         }
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -1925,6 +1935,33 @@
           reader.onerror = () => reject(new Error("File could not be read."));
           reader.readAsDataURL(file);
         });
+      }
+
+      async function uploadMediaFile(file, kind = "image") {
+        validateMediaFile(file, kind);
+
+        if (!supabaseClient) {
+          return readFileAsDataUrl(file, kind);
+        }
+
+        const extension = (file.name.split(".").pop() || kind).replace(/[^a-z0-9]/gi, "").toLowerCase() || kind;
+        const folder = kind === "video" ? "sermons/video" : kind === "audio" ? "sermons/audio" : "images";
+        const uniqueId =
+          window.crypto && window.crypto.randomUUID
+            ? window.crypto.randomUUID()
+            : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        const filePath = `${folder}/${uniqueId}.${extension}`;
+
+        const { error } = await supabaseClient.storage.from(MEDIA_BUCKET).upload(filePath, file, {
+          cacheControl: "31536000",
+          contentType: file.type || undefined,
+          upsert: false,
+        });
+
+        if (error) throw error;
+
+        const { data } = supabaseClient.storage.from(MEDIA_BUCKET).getPublicUrl(filePath);
+        return data.publicUrl;
       }
 
       function setSiteFavicon(logoUrl) {
@@ -3148,8 +3185,8 @@
           const files = Array.from(event.target.files || []);
           if (!files.length) return;
           try {
-            const dataUrls = await Promise.all(files.map((file) => readFileAsDataUrl(file, "image")));
-            onChange([...slides, ...dataUrls]);
+            const urls = await Promise.all(files.map((file) => uploadMediaFile(file, "image")));
+            onChange([...slides, ...urls]);
           } catch (error) {
             window.alert(error.message);
           } finally {
@@ -3204,14 +3241,14 @@
 
       function MediaUploadField({ name, label, kind, width, value, onChange }) {
         const accept = kind === "video" ? "video/*" : kind === "audio" ? "audio/*" : "image/*";
-        const visibleValue = isDataUrl(value) ? "" : value || "";
+        const visibleValue = value || "";
 
         async function uploadFile(event) {
           const file = event.target.files?.[0];
           if (!file) return;
           try {
-            const dataUrl = await readFileAsDataUrl(file, kind);
-            onChange(dataUrl);
+            const url = await uploadMediaFile(file, kind);
+            onChange(url);
           } catch (error) {
             window.alert(error.message);
           } finally {
@@ -3227,7 +3264,7 @@
                 id={`admin-${name}`}
                 type="text"
                 value={visibleValue}
-                placeholder={isDataUrl(value) ? "Uploaded file selected" : ""}
+                placeholder="Paste a URL or upload a file"
                 onChange={(event) => onChange(event.target.value)}
               />
               <label className="upload-button">
